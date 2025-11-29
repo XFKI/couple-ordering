@@ -1241,10 +1241,20 @@ const BatchImageUpload = ({ menuItems, updateMenu, showToast, onClose }) => {
         setCsvFile(file);
         const reader = new FileReader();
         reader.onload = (event) => {
-            const text = event.target.result;
+            let text = event.target.result;
+            
+            // 移除 UTF-8 BOM
+            if (text.charCodeAt(0) === 0xFEFF) {
+                text = text.slice(1);
+            }
+            
             const lines = text.split('\n').filter(line => line.trim());
             const parsed = lines.map(line => {
-                const [dishName, fileName] = line.split(',').map(s => s.trim());
+                // 移除引号并分割
+                const cleanLine = line.replace(/^["']|["']$/g, '').trim();
+                const parts = cleanLine.split(',');
+                const dishName = parts[0]?.replace(/^["']|["']$/g, '').trim();
+                const fileName = parts[1]?.replace(/^["']|["']$/g, '').trim();
                 return { dishName, fileName };
             });
             setCsvData(parsed);
