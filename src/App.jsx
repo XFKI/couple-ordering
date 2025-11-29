@@ -1494,6 +1494,7 @@ const MenuManagementView = ({ menuItems, updateMenu, deleteMenu, addMenu, showTo
     const [editingItem, setEditingItem] = useState(null);
     const [isAdding, setIsAdding] = useState(false);
     const [isBatchUploading, setIsBatchUploading] = useState(false);
+    const [isSyncing, setIsSyncing] = useState(false);
     const [categoryFilter, setCategoryFilter] = useState('主菜');
     const categories = ['主菜', '主食', '素菜', '汤品', '饮品'];
 
@@ -1515,6 +1516,47 @@ const MenuManagementView = ({ menuItems, updateMenu, deleteMenu, addMenu, showTo
             showToast('菜品已删除');
         }
     };
+
+    // 同步默认菜单
+    const handleSyncDefaultMenu = async () => {
+        if (!window.confirm('确定要同步默认菜单吗？\n这将添加代码中新增的菜品（如饮品），不会删除现有菜品。')) return;
+        
+        setIsSyncing(true);
+        try {
+            // 找出数据库中缺失的菜品
+            const existingIds = new Set(menuItems.map(item => item.id));
+            const missingItems = INITIAL_MENU.filter(item => !existingIds.has(item.id));
+            
+            if (missingItems.length === 0) {
+                showToast('所有默认菜品已存在，无需同步');
+                setIsSyncing(false);
+                return;
+            }
+            
+            // 转换字段名并插入
+            const itemsToInsert = missingItems.map(({ imageUrl, ...item }) => ({
+                ...item,
+                image_url: imageUrl
+            }));
+            
+            const { data: inserted, error } = await supabase
+                .from('menu')
+                .insert(itemsToInsert)
+                .select();
+            
+            if (error) throw error;
+            
+            showToast(`成功同步 ${missingItems.length} 个新菜品！`);
+            
+            // 刷新页面以重新加载菜单
+            setTimeout(() => window.location.reload(), 1500);
+        } catch (error) {
+            console.error('同步失败:', error);
+            showToast('同步失败，请重试');
+        } finally {
+            setIsSyncing(false);
+        }
+    };
     
     const filteredItems = menuItems.filter(item => item.category === categoryFilter);
 
@@ -1526,6 +1568,14 @@ const MenuManagementView = ({ menuItems, updateMenu, deleteMenu, addMenu, showTo
                     菜单及库存管理
                 </h2>
                 <div className="flex gap-2">
+                    <button
+                        onClick={handleSyncDefaultMenu}
+                        disabled={isSyncing}
+                        className="px-3 py-2 bg-purple-500 text-white rounded-full font-bold shadow-lg active:scale-95 flex items-center gap-2 disabled:opacity-50 text-sm"
+                    >
+                        {isSyncing ? <Loader className="w-4 h-4 animate-spin" /> : <Archive className="w-4 h-4" />}
+                        {isSyncing ? '同步中...' : '同步菜单'}
+                    </button>
                     <button
                         onClick={() => setIsBatchUploading(true)}
                         className="px-4 py-2 bg-blue-500 text-white rounded-full font-bold shadow-lg active:scale-95 flex items-center gap-2"
