@@ -1,9 +1,10 @@
 // Service Worker for PWA
 const CACHE_NAME = 'couple-ordering-v1';
+const BASE_PATH = '/couple-ordering/';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/manifest.json'
+  BASE_PATH,
+  BASE_PATH + 'index.html',
+  BASE_PATH + 'manifest.json'
 ];
 
 // 安装Service Worker

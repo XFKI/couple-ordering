@@ -2,20 +2,20 @@
   "name": "情侣点餐系统",
   "short_name": "点餐",
   "description": "温馨的双角色点餐应用",
-  "start_url": "./",
+  "start_url": "/couple-ordering/",
   "display": "standalone",
   "background_color": "#FFFAF0",
   "theme_color": "#F97316",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "./icon-192.png",
+      "src": "icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "./icon-512.png",
+      "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
