@@ -21,6 +21,12 @@ if not exist .git (
     exit /b 1
 )
 
+echo 📝 提交代码到Git...
+git add .
+git commit -m "更新: %date% %time%"
+git push origin main
+echo.
+
 echo 📦 开始构建项目...
 call npm run build
 if errorlevel 1 (
@@ -34,7 +40,7 @@ echo.
 echo ✅ 构建成功！
 echo.
 echo 🚀 开始部署到GitHub Pages...
-call npm run deploy
+call npx gh-pages -d dist
 if errorlevel 1 (
     echo.
     echo ❌ 部署失败！
@@ -53,11 +59,11 @@ echo    ✅ 部署成功！
 echo ==========================================
 echo.
 echo 📱 访问你的网站：
-echo    https://你的用户名.github.io/仓库名/
+echo    https://xfki.github.io/couple-ordering/
 echo.
 echo 💡 提示：
-echo    - 首次部署需要等待5-10分钟
-echo    - 记得在GitHub仓库设置中启用Pages
-echo    - 添加PWA图标以获得更好的体验
+echo    - 等待2-3分钟即可看到更新
+echo    - 刷新页面时按 Ctrl+Shift+R 强制刷新
+echo    - 修改代码后直接双击此脚本即可
 echo.
 pause
