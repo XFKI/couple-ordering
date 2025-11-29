@@ -180,7 +180,15 @@ const INITIAL_MENU = [
   { id: 'm-40', name: '炖雪梨', description: '清甜润喉，温润滋养', price: 19, stock: 99, category: '汤品', method: '雪梨慢炖，甜汤入味', flavor: '清甜润喉，温润滋养', image: '🍐', imageUrl: 'https://placehold.co/320x180/3b82f6/ffffff?text=炖雪梨', tags: [] },
   { id: 'm-41', name: '罗宋汤', description: '酸甜浓郁，西式风味', price: 19, stock: 99, category: '汤品', method: '番茄牛肉慢炖', flavor: '酸甜浓郁，西式风味', image: '🥣', imageUrl: 'https://placehold.co/320x180/3b82f6/ffffff?text=罗宋汤', tags: [] },
   { id: 'm-42', name: '菌菇汤', description: '清鲜爽口，菌香浓郁', price: 19, stock: 99, category: '汤品', method: '多种菌菇熬煮', flavor: '清鲜爽口，菌香浓郁', image: '🍄', imageUrl: 'https://placehold.co/320x180/3b82f6/ffffff?text=菌菇汤', tags: [] },
-  { id: 'm-43', name: '胡椒猪肚鸡汤', description: '胡椒辛香，滋补暖胃', price: 19, stock: 99, category: '汤品', method: '猪肚鸡肉慢炖，胡椒提味', flavor: '胡椒辛香，滋补暖胃', image: '🍲', imageUrl: 'https://placehold.co/320x180/3b82f6/ffffff?text=胡椒猪肚鸡汤', tags: [] }
+  { id: 'm-43', name: '胡椒猪肚鸡汤', description: '胡椒辛香，滋补暖胃', price: 19, stock: 99, category: '汤品', method: '猪肚鸡肉慢炖，胡椒提味', flavor: '胡椒辛香，滋补暖胃', image: '🍲', imageUrl: 'https://placehold.co/320x180/3b82f6/ffffff?text=胡椒猪肚鸡汤', tags: [] },
+  
+  // 饮品
+  { id: 'm-44', name: '小蒋特调美式', description: '苦中带甘，醇厚回味', price: 15, stock: 99, category: '饮品', method: '意式浓缩+热水', flavor: '苦中带甘，醇厚回味', image: '☕', imageUrl: 'https://placehold.co/320x180/8b4513/ffffff?text=小蒋特调美式', tags: ['招牌'] },
+  { id: 'm-45', name: '丝滑拿铁', description: '奶香浓郁，柔滑细腻', price: 18, stock: 99, category: '饮品', method: '浓缩咖啡+蒸汽牛奶', flavor: '奶香浓郁，柔滑细腻', image: '☕', imageUrl: 'https://placehold.co/320x180/8b4513/ffffff?text=丝滑拿铁', tags: [] },
+  { id: 'm-46', name: '焦糖玛奇朵', description: '香甜浓郁，层次丰富', price: 20, stock: 99, category: '饮品', method: '浓缩+牛奶+焦糖', flavor: '香甜浓郁，层次丰富', image: '☕', imageUrl: 'https://placehold.co/320x180/8b4513/ffffff?text=焦糖玛奇朵', tags: [] },
+  { id: 'm-47', name: '摩卡奇遇', description: '咖啡巧克力双重奏', price: 20, stock: 99, category: '饮品', method: '浓缩+巧克力+牛奶', flavor: '咖啡巧克力双重奏', image: '☕', imageUrl: 'https://placehold.co/320x180/8b4513/ffffff?text=摩卡奇遇', tags: [] },
+  { id: 'm-48', name: '冰萃冷brew', description: '顺滑清甜，冰爽解渴', price: 16, stock: 99, category: '饮品', method: '冷水慢萃12小时', flavor: '顺滑清甜，冰爽解渴', image: '🧊', imageUrl: 'https://placehold.co/320x180/8b4513/ffffff?text=冰萃冷brew', tags: [] },
+  { id: 'm-49', name: '手冲单品', description: '果酸明亮，香气馥郁', price: 22, stock: 99, category: '饮品', method: '手工冲泡精品豆', flavor: '果酸明亮，香气馥郁', image: '☕', imageUrl: 'https://placehold.co/320x180/8b4513/ffffff?text=手冲单品', tags: [] }
 ];
 
 // 用户ID管理
@@ -738,14 +746,12 @@ const CustomerView = ({ userId, setRole, menuItems, allOrders, initialView = 'me
   const currentMenu = menuItems; // Use editable menu passed from App
 
   // 分类状态
-  const [selectedCategory, setSelectedCategory] = useState('全部');
-  const categories = ['全部', '主食', '主菜', '素菜', '汤品'];
+  const [selectedCategory, setSelectedCategory] = useState('主菜');
+  const categories = ['主菜', '主食', '素菜', '汤品', '饮品'];
   
   // 根据分类筛选菜单，招牌菜品自动排序到最前面
   const filteredMenu = useMemo(() => {
-    let filtered = selectedCategory === '全部' 
-      ? currentMenu 
-      : currentMenu.filter(item => item.category === selectedCategory);
+    let filtered = currentMenu.filter(item => item.category === selectedCategory);
     
     // 排序: 招牌菜品在前，其他菜品在后
     return filtered.sort((a, b) => {
@@ -958,13 +964,13 @@ const CustomerView = ({ userId, setRole, menuItems, allOrders, initialView = 'me
         <Modal isOpen={!!selectedItem} onClose={() => setSelectedItem(null)}>
           {selectedItem && (
             <div className="p-4 pb-6">
-              {/* 实拍图片显示（1:1比例，自适应缩放） */}
-              <div className="w-full aspect-square bg-gray-100 rounded-2xl overflow-hidden flex items-center justify-center text-6xl mb-3 shadow-lg">
+              {/* 实拍图片显示（自适应高度，最大40vh） */}
+              <div className="w-full max-h-[40vh] bg-gray-100 rounded-2xl overflow-hidden flex items-center justify-center text-6xl mb-3 shadow-lg">
                   {selectedItem.imageUrl ? (
                       <img 
                           src={selectedItem.imageUrl} 
                           alt={selectedItem.name} 
-                          className="w-full h-full object-cover"
+                          className="w-full h-auto max-h-[40vh] object-contain"
                           onError={(e) => { e.target.onerror = null; e.target.src="https://placehold.co/400x400/f3f4f6/6b7280?text=无实拍图/链接失效"; }} 
                       />
                   ) : (
@@ -1488,8 +1494,8 @@ const MenuManagementView = ({ menuItems, updateMenu, deleteMenu, addMenu, showTo
     const [editingItem, setEditingItem] = useState(null);
     const [isAdding, setIsAdding] = useState(false);
     const [isBatchUploading, setIsBatchUploading] = useState(false);
-    const [categoryFilter, setCategoryFilter] = useState('全部');
-    const categories = ['全部', '主食', '主菜', '素菜', '汤品'];
+    const [categoryFilter, setCategoryFilter] = useState('主菜');
+    const categories = ['主菜', '主食', '素菜', '汤品', '饮品'];
 
     const handleSave = (updatedItem) => {
         updateMenu(updatedItem);
@@ -1510,9 +1516,7 @@ const MenuManagementView = ({ menuItems, updateMenu, deleteMenu, addMenu, showTo
         }
     };
     
-    const filteredItems = categoryFilter === '全部' 
-        ? menuItems 
-        : menuItems.filter(item => item.category === categoryFilter);
+    const filteredItems = menuItems.filter(item => item.category === categoryFilter);
 
     return (
         <div className="p-4 pt-8 pb-20 space-y-4">
@@ -1549,7 +1553,7 @@ const MenuManagementView = ({ menuItems, updateMenu, deleteMenu, addMenu, showTo
                                 : 'bg-white text-gray-600 border border-gray-200'
                         }`}
                     >
-                        {cat} ({cat === '全部' ? menuItems.length : menuItems.filter(i => i.category === cat).length})
+                        {cat} ({menuItems.filter(i => i.category === cat).length})
                     </button>
                 ))}
             </div>
