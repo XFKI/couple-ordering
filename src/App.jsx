@@ -1422,19 +1422,20 @@ const KitchenView = ({ setRole, menuItems, updateMenu, deleteMenu, addMenu, allO
       { key: 'pending', label: '待处理', Icon: Bell, activeBg: 'bg-orange-100', activeText: 'text-orange-600' },
       { key: 'cooking', label: '烹饪中', Icon: Utensils, activeBg: 'bg-blue-100', activeText: 'text-blue-600' },
       { key: 'completed', label: '已完成', Icon: CheckCircle, activeBg: 'bg-green-100', activeText: 'text-green-600' },
+      { key: 'rejected', label: '已拒绝', Icon: XCircle, activeBg: 'bg-red-100', activeText: 'text-red-600' },
   ];
 
   // Filter orders based on status and date
   const filteredOrders = useMemo(() => {
     // Sort: unprocessed first (pending -> cooking -> completed), then by time descending
     const sortedOrders = [...allOrders]
-        .filter(o => o.status !== 'rejected' && o.status !== 'cancelled' && o.status !== 'deleted') // 过滤已拒绝、已撤销和已删除
+        .filter(o => o.status !== 'cancelled' && o.status !== 'deleted') // 只过滤已撤销和已删除
         .filter(o => {
             if (selectedDate === 'all') return true;
             return getDateKey(o.created_at) === selectedDate;
         })
         .sort((a, b) => {
-            const statusOrder = { 'pending': 0, 'cooking': 1, 'completed': 2 };
+            const statusOrder = { 'pending': 0, 'cooking': 1, 'completed': 2, 'rejected': 3 };
             const statusDiff = statusOrder[a.status] - statusOrder[b.status];
             if (statusDiff !== 0) return statusDiff;
             // Same status, sort by time descending (newest first)
@@ -1650,7 +1651,8 @@ const KitchenView = ({ setRole, menuItems, updateMenu, deleteMenu, addMenu, allO
                 return (
                     <div key={order.id} className={`bg-white rounded-xl overflow-hidden shadow-md border-l-4 ${
                         order.status === 'pending' ? 'border-orange-500' : 
-                        order.status === 'cooking' ? 'border-blue-500' : 'border-green-500'
+                        order.status === 'cooking' ? 'border-blue-500' : 
+                        order.status === 'rejected' ? 'border-red-500' : 'border-green-500'
                     }`}>
                         <div className="p-4 border-b border-gray-100 flex justify-between items-start bg-gray-50/50">
                         <div>
@@ -1661,9 +1663,12 @@ const KitchenView = ({ setRole, menuItems, updateMenu, deleteMenu, addMenu, allO
                         </div>
                         <span className={`px-2 py-1 rounded text-xs font-bold ${
                             order.status === 'pending' ? 'bg-orange-100 text-orange-600' : 
-                            order.status === 'cooking' ? 'bg-blue-100 text-blue-600' : 'bg-green-100 text-green-600'
+                            order.status === 'cooking' ? 'bg-blue-100 text-blue-600' : 
+                            order.status === 'rejected' ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'
                         }`}>
-                            {order.status === 'pending' ? '待接单' : order.status === 'cooking' ? '烹饪中' : '已完成'}
+                            {order.status === 'pending' ? '待接单' : 
+                             order.status === 'cooking' ? '烹饪中' : 
+                             order.status === 'rejected' ? '已拒绝' : '已完成'}
                         </span>
                         </div>
 
@@ -1683,7 +1688,7 @@ const KitchenView = ({ setRole, menuItems, updateMenu, deleteMenu, addMenu, allO
                         </div>
 
                         {/* Action buttons */}
-                        {order.status !== 'completed' && (
+                        {order.status !== 'completed' && order.status !== 'rejected' && (
                             <div className="p-3 bg-gray-50 space-y-2">
                                 <button 
                                     onClick={() => setSelectedOrder(order)}
@@ -1726,7 +1731,7 @@ const KitchenView = ({ setRole, menuItems, updateMenu, deleteMenu, addMenu, allO
                                 </button>
                             </div>
                         )}
-                        {order.status === 'completed' && (
+                        {(order.status === 'completed' || order.status === 'rejected') && (
                             <div className="p-3 bg-gray-50 space-y-2">
                                 <button 
                                     onClick={() => setSelectedOrder(order)}
@@ -1734,7 +1739,7 @@ const KitchenView = ({ setRole, menuItems, updateMenu, deleteMenu, addMenu, allO
                                 >
                                     <Eye className="w-4 h-4" /> 查看详情
                                 </button>
-                                {/* 已完成订单也可删除 */}
+                                {/* 已完成和已拒绝订单也可删除 */}
                                 <button 
                                     onClick={() => updateOrderStatus(order.id, 'deleted')}
                                     className="w-full py-2 bg-red-50 text-red-600 border border-red-200 rounded-lg font-bold text-sm hover:bg-red-100 transition active:scale-95 flex items-center justify-center gap-1"
