@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { 
   Utensils, Heart, ChefHat, ShoppingCart, 
   Clock, CheckCircle, XCircle, Bell, Settings, 
-  ChevronLeft, Plus, Minus, ArrowRight, Home, List, LogOut, Edit, Upload, Loader, Eye, X 
+  ChevronLeft, Plus, Minus, ArrowRight, Home, List, LogOut, Edit, Upload, Loader, Eye, X, Trash2, Archive 
 } from 'lucide-react';
 import { createClient } from '@supabase/supabase-js';
 
@@ -249,7 +249,8 @@ const OrderDetailModal = ({ order, onClose, sequenceMap }) => {
         cooking: { bg: 'bg-blue-100', text: 'text-blue-600', label: '烹饪中', icon: '👨‍🍳' },
         completed: { bg: 'bg-green-100', text: 'text-green-600', label: '已完成', icon: '✅' },
         rejected: { bg: 'bg-red-100', text: 'text-red-600', label: '已拒绝', icon: '❌' },
-        cancelled: { bg: 'bg-gray-100', text: 'text-gray-600', label: '已撤销', icon: '🚫' }
+        cancelled: { bg: 'bg-gray-100', text: 'text-gray-600', label: '已撤销', icon: '🚫' },
+        deleted: { bg: 'bg-gray-200', text: 'text-gray-700', label: '已删除', icon: '🗑️' }
     };
     
     const config = statusConfig[order.status] || statusConfig.pending;
@@ -369,7 +370,7 @@ const OrderHistoryView = ({ userId, allOrders, showToast }) => {
     // 显示所有设备的订单（移除user_id筛选），过滤已撤销，按日期筛选
     const displayOrders = useMemo(() => {
         return allOrders
-            .filter(o => o.status !== 'cancelled') // 过滤已撤销
+            .filter(o => o.status !== 'cancelled' && o.status !== 'deleted') // 过滤已撤销和已删除
             .filter(o => {
                 if (selectedDate === 'all') return true;
                 return getDateKey(o.created_at) === selectedDate;
@@ -450,7 +451,8 @@ const OrderHistoryView = ({ userId, allOrders, showToast }) => {
                         cooking: { bg: 'bg-blue-100', text: 'text-blue-600', label: '烹饪中' },
                         completed: { bg: 'bg-green-100', text: 'text-green-600', label: '已完成' },
                         rejected: { bg: 'bg-red-100', text: 'text-red-600', label: '已拒绝' },
-                        cancelled: { bg: 'bg-gray-100', text: 'text-gray-600', label: '已撤销' }
+                        cancelled: { bg: 'bg-gray-100', text: 'text-gray-600', label: '已撤销' },
+                        deleted: { bg: 'bg-gray-200', text: 'text-gray-700', label: '已删除' }
                     };
                     
                     const config = statusConfig[order.status] || statusConfig.pending;
@@ -670,7 +672,7 @@ const CustomerView = ({ userId, setRole, menuItems, allOrders, initialView = 'me
     if (!userId) return;
 
     const myOrder = allOrders
-        .filter(o => o.user_id === userId && o.status !== 'completed' && o.status !== 'rejected' && o.status !== 'cancelled')
+        .filter(o => o.user_id === userId && o.status !== 'completed' && o.status !== 'rejected' && o.status !== 'cancelled' && o.status !== 'deleted')
         .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())[0];
             
     if (myOrder) {
@@ -1426,7 +1428,7 @@ const KitchenView = ({ setRole, menuItems, updateMenu, deleteMenu, addMenu, allO
   const filteredOrders = useMemo(() => {
     // Sort: unprocessed first (pending -> cooking -> completed), then by time descending
     const sortedOrders = [...allOrders]
-        .filter(o => o.status !== 'rejected' && o.status !== 'cancelled') // 过滤已拒绝和已撤销
+        .filter(o => o.status !== 'rejected' && o.status !== 'cancelled' && o.status !== 'deleted') // 过滤已拒绝、已撤销和已删除
         .filter(o => {
             if (selectedDate === 'all') return true;
             return getDateKey(o.created_at) === selectedDate;
@@ -1443,6 +1445,139 @@ const KitchenView = ({ setRole, menuItems, updateMenu, deleteMenu, addMenu, allO
         filterStatus === 'all' ? true : o.status === filterStatus
     );
   }, [allOrders, filterStatus, selectedDate]);
+
+  // 回收站订单
+  const deletedOrders = useMemo(() => {
+    return [...allOrders]
+        .filter(o => o.status === 'deleted')
+        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+  }, [allOrders]);
+
+  // 永久删除订单（从数据库中删除）
+  const permanentlyDeleteOrder = async (orderId) => {
+    if (!window.confirm('确定要永久删除此订单吗？此操作无法撤销！')) return;
+    
+    try {
+        const { error } = await supabase
+            .from('orders')
+            .delete()
+            .eq('id', orderId);
+
+        if (error) throw new Error(error.message);
+        showToast('订单已永久删除');
+    } catch (e) {
+        console.error('永久删除失败:', e);
+        showToast('删除失败，请重试');
+    }
+  };
+
+  // 恢复订单
+  const restoreOrder = async (orderId) => {
+    try {
+        const { error } = await supabase
+            .from('orders')
+            .update({ status: 'pending' })
+            .eq('id', orderId);
+
+        if (error) throw new Error(error.message);
+        showToast('订单已恢复到待处理');
+    } catch (e) {
+        console.error('恢复失败:', e);
+        showToast('恢复失败，请重试');
+    }
+  };
+
+  // 清空回收站
+  const emptyTrash = async () => {
+    if (!window.confirm(`确定要清空回收站吗？这将永久删除 ${deletedOrders.length} 个订单，此操作无法撤销！`)) return;
+    
+    try {
+        const deleteIds = deletedOrders.map(o => o.id);
+        const { error } = await supabase
+            .from('orders')
+            .delete()
+            .in('id', deleteIds);
+
+        if (error) throw new Error(error.message);
+        showToast(`已清空回收站，删除了 ${deleteIds.length} 个订单`);
+    } catch (e) {
+        console.error('清空回收站失败:', e);
+        showToast('清空失败，请重试');
+    }
+  };
+
+  // 回收站视图
+  const renderTrashView = () => (
+    <div className="px-4 space-y-4 pt-8 pb-24">
+        <div className="flex justify-between items-center mb-4">
+            <h2 className="text-lg font-bold text-gray-700">🗑️ 回收站 ({deletedOrders.length})</h2>
+            {deletedOrders.length > 0 && (
+                <button 
+                    onClick={emptyTrash}
+                    className="px-4 py-2 bg-red-500 text-white rounded-lg font-bold text-sm hover:bg-red-600 transition active:scale-95"
+                >
+                    清空回收站
+                </button>
+            )}
+        </div>
+
+        {deletedOrders.length === 0 ? (
+            <div className="text-center text-gray-400 py-20">
+                <div className="text-6xl mb-4">🗑️</div>
+                <p className="text-lg">回收站是空的</p>
+                <p className="text-sm mt-2">已删除的订单会显示在这里</p>
+            </div>
+        ) : (
+            deletedOrders.map(order => {
+                const { displayId, displayTime } = formatOrderDisplay(order.created_at, sequenceMap);
+
+                return (
+                    <div key={order.id} className="bg-white rounded-xl overflow-hidden shadow-md border-l-4 border-gray-400 opacity-75">
+                        <div className="p-4 border-b border-gray-100 flex justify-between items-start bg-gray-50/50">
+                            <div>
+                                <h3 className="font-bold text-gray-800 text-lg">订单号: {displayId}</h3>
+                                <p className="text-xs text-gray-500">时间: {displayTime}</p>
+                                <p className="text-xs text-gray-500 mt-1">{order.customer_name}</p>
+                            </div>
+                            <span className="px-2 py-1 rounded text-xs font-bold bg-gray-200 text-gray-600">
+                                已删除
+                            </span>
+                        </div>
+
+                        <div className="p-4">
+                            {order.items.map((item, i) => (
+                                <div key={i} className="flex justify-between items-center mb-2 pb-2 border-b border-gray-50 last:border-b-0 last:pb-0">
+                                    <div className="flex flex-col">
+                                        <span className="font-medium text-gray-700">{item.name}</span>
+                                        {item.special_request && item.special_request !== '无特殊备注' && (
+                                            <span className="text-xs text-red-500 italic">⚠️ 备注: {item.special_request}</span>
+                                        )}
+                                    </div>
+                                    <span className="font-bold text-gray-900">x{item.quantity}</span>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="p-3 bg-gray-50 flex gap-3">
+                            <button 
+                                onClick={() => restoreOrder(order.id)}
+                                className="flex-1 py-2 bg-green-500 text-white rounded-lg font-bold text-sm hover:bg-green-600 transition active:scale-95"
+                            >
+                                恢复订单
+                            </button>
+                            <button 
+                                onClick={() => permanentlyDeleteOrder(order.id)}
+                                className="flex-1 py-2 bg-red-500 text-white rounded-lg font-bold text-sm hover:bg-red-600 transition active:scale-95"
+                            >
+                                永久删除
+                            </button>
+                        </div>
+                    </div>
+                );
+            })
+        )}
+    </div>
+  );
 
 
     const renderOrderView = () => (
@@ -1582,15 +1717,29 @@ const KitchenView = ({ setRole, menuItems, updateMenu, deleteMenu, addMenu, allO
                                          </button>
                                     )}
                                 </div>
+                                {/* 删除按钮 - 所有状态都可删除 */}
+                                <button 
+                                    onClick={() => updateOrderStatus(order.id, 'deleted')}
+                                    className="w-full py-2 bg-red-50 text-red-600 border border-red-200 rounded-lg font-bold text-sm hover:bg-red-100 transition active:scale-95 flex items-center justify-center gap-1"
+                                >
+                                    <Trash2 className="w-4 h-4" /> 删除订单
+                                </button>
                             </div>
                         )}
                         {order.status === 'completed' && (
-                            <div className="p-3 bg-gray-50">
+                            <div className="p-3 bg-gray-50 space-y-2">
                                 <button 
                                     onClick={() => setSelectedOrder(order)}
                                     className="w-full py-2 bg-gray-100 text-gray-700 rounded-lg font-bold text-sm active:scale-95 transition-transform flex items-center justify-center gap-1"
                                 >
                                     <Eye className="w-4 h-4" /> 查看详情
+                                </button>
+                                {/* 已完成订单也可删除 */}
+                                <button 
+                                    onClick={() => updateOrderStatus(order.id, 'deleted')}
+                                    className="w-full py-2 bg-red-50 text-red-600 border border-red-200 rounded-lg font-bold text-sm hover:bg-red-100 transition active:scale-95 flex items-center justify-center gap-1"
+                                >
+                                    <Trash2 className="w-4 h-4" /> 删除订单
                                 </button>
                             </div>
                         )}
@@ -1619,7 +1768,8 @@ const KitchenView = ({ setRole, menuItems, updateMenu, deleteMenu, addMenu, allO
       </div>
 
       <div className="flex-1 overflow-y-auto pb-20">
-        {kitchenTab === 'orders' ? renderOrderView() : (
+        {kitchenTab === 'orders' ? renderOrderView() : 
+         kitchenTab === 'trash' ? renderTrashView() : (
           <MenuManagementView 
             menuItems={menuItems} 
             updateMenu={updateMenu} 
@@ -1638,6 +1788,13 @@ const KitchenView = ({ setRole, menuItems, updateMenu, deleteMenu, addMenu, allO
           >
              <Utensils className="w-6 h-6 mb-1" />
              <span className="text-xs font-medium">订单管理</span>
+          </button>
+          <button 
+              onClick={() => setKitchenTab('trash')} 
+              className={`flex flex-col items-center p-2 rounded-lg transition ${kitchenTab === 'trash' ? 'text-orange-500' : 'text-gray-400 hover:text-gray-600'}`}
+          >
+             <Archive className="w-6 h-6 mb-1" />
+             <span className="text-xs font-medium">回收站</span>
           </button>
           <button 
               onClick={() => setKitchenTab('menu')} 

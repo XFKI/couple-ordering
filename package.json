@@ -1,7 +1,7 @@
 {
   "name": "couple-ordering-app",
   "version": "1.0.0",
-  "description": "情侣点餐系统",
+  "description": "小蒋炒菜馆",
   "type": "module",
   "scripts": {
     "dev": "vite",
