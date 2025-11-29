@@ -1151,7 +1151,7 @@ const MenuEditForm = ({ item, onSave, onCancel, showToast }) => {
                 <label className="block">
                     <span className="text-sm font-medium text-gray-700">类别</span>
                     <select name="category" value={formData.category} onChange={handleChange} className="mt-1 w-full p-2 border rounded-lg focus:ring-orange-500">
-                        {['主菜', '主食', '甜点', '汤品'].map(c => <option key={c} value={c}>{c}</option>)}
+                        {['主菜', '主食', '素菜', '汤品', '饮品'].map(c => <option key={c} value={c}>{c}</option>)}
                     </select>
                 </label>
             </div>
