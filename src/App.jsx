@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { 
   Utensils, Heart, ChefHat, ShoppingCart, 
   Clock, CheckCircle, XCircle, Bell, Settings, 
-  ChevronLeft, Plus, Minus, ArrowRight, Home, List, LogOut, Edit, Upload, Loader, Eye, X, Trash2, Archive 
+  ChevronLeft, Plus, Minus, ArrowRight, Home, List, LogOut, Edit, Upload, Loader, Eye, X, Trash2, Archive, FileUp 
 } from 'lucide-react';
 import { createClient } from '@supabase/supabase-js';
 
@@ -1224,12 +1224,249 @@ const MenuEditForm = ({ item, onSave, onCancel, showToast }) => {
     );
 };
 
+// 批量图片导入组件
+const BatchImageUpload = ({ menuItems, updateMenu, showToast, onClose }) => {
+    const [csvFile, setCsvFile] = useState(null);
+    const [imageFiles, setImageFiles] = useState([]);
+    const [csvData, setCsvData] = useState([]);
+    const [isProcessing, setIsProcessing] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState({ current: 0, total: 0 });
+    const [previewMatches, setPreviewMatches] = useState([]);
+
+    // 解析 CSV 文件
+    const handleCsvUpload = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        setCsvFile(file);
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const text = event.target.result;
+            const lines = text.split('\n').filter(line => line.trim());
+            const parsed = lines.map(line => {
+                const [dishName, fileName] = line.split(',').map(s => s.trim());
+                return { dishName, fileName };
+            });
+            setCsvData(parsed);
+            showToast(`已解析 ${parsed.length} 条数据`);
+        };
+        reader.readAsText(file);
+    };
+
+    // 选择图片文件
+    const handleImageSelect = (e) => {
+        const files = Array.from(e.target.files);
+        setImageFiles(files);
+        showToast(`已选择 ${files.length} 张图片`);
+    };
+
+    // 预览匹配结果
+    useEffect(() => {
+        if (csvData.length > 0 && imageFiles.length > 0) {
+            const matches = csvData.map(({ dishName, fileName }) => {
+                const imageFile = imageFiles.find(file => file.name === fileName);
+                const menuItem = menuItems.find(item => item.name === dishName);
+                return {
+                    dishName,
+                    fileName,
+                    imageFile,
+                    menuItem,
+                    status: imageFile && menuItem ? 'ready' : !imageFile ? 'no-image' : 'no-dish'
+                };
+            });
+            setPreviewMatches(matches);
+        }
+    }, [csvData, imageFiles, menuItems]);
+
+    // 批量上传
+    const handleBatchUpload = async () => {
+        const readyMatches = previewMatches.filter(m => m.status === 'ready');
+        if (readyMatches.length === 0) {
+            showToast('没有可上传的匹配项');
+            return;
+        }
+
+        if (!window.confirm(`确定要上传 ${readyMatches.length} 张图片并更新菜品吗？`)) return;
+
+        setIsProcessing(true);
+        setUploadProgress({ current: 0, total: readyMatches.length });
+
+        const bucketName = 'menu_images';
+        let successCount = 0;
+
+        for (let i = 0; i < readyMatches.length; i++) {
+            const { menuItem, imageFile, fileName } = readyMatches[i];
+            
+            try {
+                // 生成唯一文件名
+                const uniqueFileName = `${menuItem.id}-${Date.now()}-${fileName.replace(/\s/g, '_')}`;
+                
+                // 上传到 Supabase Storage
+                const { data: uploadData, error: uploadError } = await supabase.storage
+                    .from(bucketName)
+                    .upload(uniqueFileName, imageFile);
+
+                if (uploadError) throw uploadError;
+
+                // 获取公共 URL
+                const { data: urlData } = supabase.storage
+                    .from(bucketName)
+                    .getPublicUrl(uniqueFileName);
+
+                if (urlData?.publicUrl) {
+                    // 更新菜品的 image_url
+                    await updateMenu({ ...menuItem, imageUrl: urlData.publicUrl });
+                    successCount++;
+                }
+
+                setUploadProgress({ current: i + 1, total: readyMatches.length });
+            } catch (error) {
+                console.error(`上传失败 ${fileName}:`, error);
+            }
+        }
+
+        setIsProcessing(false);
+        showToast(`批量上传完成！成功 ${successCount}/${readyMatches.length} 张`);
+        
+        if (successCount === readyMatches.length) {
+            setTimeout(onClose, 1500);
+        }
+    };
+
+    return (
+        <div className="p-4 space-y-4 max-h-[80vh] overflow-y-auto">
+            <h4 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+                <FileUp className="w-5 h-5" />
+                批量导入菜品图片
+            </h4>
+
+            <div className="bg-blue-50 p-3 rounded-lg border border-blue-200 text-sm text-blue-800">
+                <p className="font-bold mb-1">📋 使用说明：</p>
+                <ol className="list-decimal list-inside space-y-1 text-xs">
+                    <li>准备 CSV 文件，格式：<code className="bg-white px-1 rounded">菜品名,图片文件名</code></li>
+                    <li>每行一条数据，例如：<code className="bg-white px-1 rounded">红烧肉,hongshaorou.jpg</code></li>
+                    <li>选择对应的图片文件（支持多选）</li>
+                    <li>预览匹配结果，确认后批量上传</li>
+                </ol>
+            </div>
+
+            {/* CSV 文件上传 */}
+            <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700">
+                    1. 上传 CSV 文件
+                </label>
+                <input 
+                    type="file" 
+                    accept=".csv,.txt" 
+                    onChange={handleCsvUpload}
+                    className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600"
+                />
+                {csvData.length > 0 && (
+                    <p className="text-xs text-green-600">✓ 已解析 {csvData.length} 条数据</p>
+                )}
+            </div>
+
+            {/* 图片文件选择 */}
+            <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700">
+                    2. 选择图片文件（可多选）
+                </label>
+                <input 
+                    type="file" 
+                    accept="image/*" 
+                    multiple
+                    onChange={handleImageSelect}
+                    className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-500 file:text-white hover:file:bg-green-600"
+                />
+                {imageFiles.length > 0 && (
+                    <p className="text-xs text-green-600">✓ 已选择 {imageFiles.length} 张图片</p>
+                )}
+            </div>
+
+            {/* 预览匹配结果 */}
+            {previewMatches.length > 0 && (
+                <div className="space-y-2">
+                    <label className="block text-sm font-medium text-gray-700">
+                        3. 预览匹配结果
+                    </label>
+                    <div className="max-h-60 overflow-y-auto space-y-1 bg-gray-50 p-2 rounded border">
+                        {previewMatches.map((match, idx) => (
+                            <div key={idx} className={`text-xs p-2 rounded flex items-center justify-between ${
+                                match.status === 'ready' ? 'bg-green-50 text-green-700' : 
+                                match.status === 'no-image' ? 'bg-yellow-50 text-yellow-700' : 
+                                'bg-red-50 text-red-700'
+                            }`}>
+                                <span className="font-mono truncate flex-1">
+                                    {match.dishName} → {match.fileName}
+                                </span>
+                                <span className="ml-2 font-bold">
+                                    {match.status === 'ready' ? '✓ 就绪' : 
+                                     match.status === 'no-image' ? '⚠ 缺图片' : 
+                                     '✗ 无此菜品'}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="flex gap-2 text-xs">
+                        <span className="text-green-600">
+                            ✓ 就绪: {previewMatches.filter(m => m.status === 'ready').length}
+                        </span>
+                        <span className="text-yellow-600">
+                            ⚠ 缺图片: {previewMatches.filter(m => m.status === 'no-image').length}
+                        </span>
+                        <span className="text-red-600">
+                            ✗ 无菜品: {previewMatches.filter(m => m.status === 'no-dish').length}
+                        </span>
+                    </div>
+                </div>
+            )}
+
+            {/* 上传进度 */}
+            {isProcessing && (
+                <div className="bg-blue-50 p-3 rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                        <Loader className="w-4 h-4 animate-spin text-blue-600" />
+                        <span className="text-sm font-bold text-blue-600">
+                            正在上传 {uploadProgress.current}/{uploadProgress.total}
+                        </span>
+                    </div>
+                    <div className="w-full bg-blue-200 rounded-full h-2">
+                        <div 
+                            className="bg-blue-600 h-2 rounded-full transition-all"
+                            style={{ width: `${(uploadProgress.current / uploadProgress.total) * 100}%` }}
+                        />
+                    </div>
+                </div>
+            )}
+
+            {/* 操作按钮 */}
+            <div className="flex gap-3 pt-4">
+                <button 
+                    onClick={onClose}
+                    disabled={isProcessing}
+                    className="flex-1 py-2 bg-gray-300 text-gray-700 rounded-lg font-bold active:scale-95 disabled:opacity-50"
+                >
+                    取消
+                </button>
+                <button 
+                    onClick={handleBatchUpload}
+                    disabled={isProcessing || previewMatches.filter(m => m.status === 'ready').length === 0}
+                    className="flex-1 py-2 bg-orange-500 text-white rounded-lg font-bold active:scale-95 disabled:opacity-50 disabled:bg-gray-400"
+                >
+                    {isProcessing ? '上传中...' : `开始上传 (${previewMatches.filter(m => m.status === 'ready').length})`}
+                </button>
+            </div>
+        </div>
+    );
+};
+
 // --- 5. 大厨端组件 ---
 
 // 大厨端：菜单管理界面 
 const MenuManagementView = ({ menuItems, updateMenu, deleteMenu, addMenu, showToast }) => {
     const [editingItem, setEditingItem] = useState(null);
     const [isAdding, setIsAdding] = useState(false);
+    const [isBatchUploading, setIsBatchUploading] = useState(false);
     const [categoryFilter, setCategoryFilter] = useState('全部');
     const categories = ['全部', '主食', '主菜', '素菜', '汤品'];
 
@@ -1263,12 +1500,20 @@ const MenuManagementView = ({ menuItems, updateMenu, deleteMenu, addMenu, showTo
                     <Settings className="w-6 h-6 mr-2 text-gray-500" />
                     菜单及库存管理
                 </h2>
-                <button
-                    onClick={() => setIsAdding(true)}
-                    className="px-4 py-2 bg-green-500 text-white rounded-full font-bold shadow-lg active:scale-95 flex items-center gap-2"
-                >
-                    <Plus className="w-5 h-5" /> 新增菜品
-                </button>
+                <div className="flex gap-2">
+                    <button
+                        onClick={() => setIsBatchUploading(true)}
+                        className="px-4 py-2 bg-blue-500 text-white rounded-full font-bold shadow-lg active:scale-95 flex items-center gap-2"
+                    >
+                        <FileUp className="w-5 h-5" /> 批量导入
+                    </button>
+                    <button
+                        onClick={() => setIsAdding(true)}
+                        className="px-4 py-2 bg-green-500 text-white rounded-full font-bold shadow-lg active:scale-95 flex items-center gap-2"
+                    >
+                        <Plus className="w-5 h-5" /> 新增菜品
+                    </button>
+                </div>
             </div>
             
             {/* 分类筛选 */}
@@ -1363,6 +1608,16 @@ const MenuManagementView = ({ menuItems, updateMenu, deleteMenu, addMenu, showTo
                     onSave={handleAdd} 
                     onCancel={() => setIsAdding(false)} 
                     showToast={showToast}
+                />
+            </Modal>
+            
+            {/* Batch Upload Modal */}
+            <Modal isOpen={isBatchUploading} onClose={() => setIsBatchUploading(false)}>
+                <BatchImageUpload 
+                    menuItems={menuItems}
+                    updateMenu={updateMenu}
+                    showToast={showToast}
+                    onClose={() => setIsBatchUploading(false)}
                 />
             </Modal>
         </div>
