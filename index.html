@@ -10,50 +10,9 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="点餐系统" />
-    
-    <!-- 动态设置路径 -->
-    <script>
-      const base = '/couple-ordering/';
-      // 设置manifest
-      const manifestLink = document.createElement('link');
-      manifestLink.rel = 'manifest';
-      manifestLink.href = base + 'manifest.json';
-      document.head.appendChild(manifestLink);
-      
-      // 设置favicon
-      const iconLink = document.createElement('link');
-      iconLink.rel = 'icon';
-      iconLink.type = 'image/png';
-      iconLink.sizes = '192x192';
-      iconLink.href = base + 'icon-192.png';
-      document.head.appendChild(iconLink);
-      
-      // 设置apple-touch-icon
-      const appleIconLink = document.createElement('link');
-      appleIconLink.rel = 'apple-touch-icon';
-      appleIconLink.href = base + 'icon-192.png';
-      document.head.appendChild(appleIconLink);
-    </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/index.jsx"></script>
-    
-    <!-- 注册Service Worker -->
-    <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/couple-ordering/sw.js', {
-            scope: '/couple-ordering/'
-          })
-            .then((registration) => {
-              console.log('SW registered: ', registration);
-            })
-            .catch((error) => {
-              console.log('SW registration failed: ', error);
-            });
-        });
-      }
-    </script>
   </body>
 </html>
