@@ -1250,7 +1250,7 @@ const BatchImageUpload = ({ menuItems, updateMenu, showToast, onClose }) => {
             setCsvData(parsed);
             showToast(`已解析 ${parsed.length} 条数据`);
         };
-        reader.readAsText(file);
+        reader.readAsText(file, 'UTF-8'); // 指定 UTF-8 编码
     };
 
     // 选择图片文件
@@ -1266,6 +1266,17 @@ const BatchImageUpload = ({ menuItems, updateMenu, showToast, onClose }) => {
             const matches = csvData.map(({ dishName, fileName }) => {
                 const imageFile = imageFiles.find(file => file.name === fileName);
                 const menuItem = menuItems.find(item => item.name === dishName);
+                
+                // 调试信息
+                console.log('匹配检查:', {
+                    dishName,
+                    fileName,
+                    foundImage: !!imageFile,
+                    foundDish: !!menuItem,
+                    availableImages: imageFiles.map(f => f.name),
+                    availableDishes: menuItems.map(m => m.name)
+                });
+                
                 return {
                     dishName,
                     fileName,
