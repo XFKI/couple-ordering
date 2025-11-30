@@ -964,13 +964,13 @@ const CustomerView = ({ userId, setRole, menuItems, allOrders, initialView = 'me
         <Modal isOpen={!!selectedItem} onClose={() => setSelectedItem(null)}>
           {selectedItem && (
             <div className="p-4 pb-6">
-              {/* 实拍图片显示（自适应高度，最大40vh） */}
-              <div className="w-full max-h-[40vh] bg-gray-100 rounded-2xl overflow-hidden flex items-center justify-center text-6xl mb-3 shadow-lg">
+              {/* 实拍图片显示（自适应高度，最大30vh） */}
+              <div className="w-full max-h-[30vh] bg-gray-100 rounded-2xl overflow-hidden flex items-center justify-center text-6xl mb-3 shadow-lg">
                   {selectedItem.imageUrl ? (
                       <img 
                           src={selectedItem.imageUrl} 
                           alt={selectedItem.name} 
-                          className="w-full h-auto max-h-[40vh] object-contain"
+                          className="w-full h-auto max-h-[30vh] object-contain"
                           onError={(e) => { e.target.onerror = null; e.target.src="https://placehold.co/400x400/f3f4f6/6b7280?text=无实拍图/链接失效"; }} 
                       />
                   ) : (
@@ -990,40 +990,79 @@ const CustomerView = ({ userId, setRole, menuItems, allOrders, initialView = 'me
               </div>
 
               <div className="mt-4 space-y-3">
-                {/* 快捷选项 */}
+                {/* 快捷选项 - 根据菜品类别动态显示 */}
                 <div className="bg-blue-50 p-3 rounded-xl border border-blue-100">
                    <label className="text-xs font-bold text-blue-600 block mb-2">快捷选项</label>
                    <div className="flex gap-2 flex-wrap">
-                     <button
-                       onClick={() => setQuickOptions(prev => ({ ...prev, spicy: !prev.spicy }))}
-                       className={`px-3 py-1.5 rounded-full text-sm font-bold transition-all ${
-                         quickOptions.spicy 
-                           ? 'bg-red-500 text-white shadow-md' 
-                           : 'bg-white text-gray-600 border border-gray-200'
-                       }`}
-                     >
-                       🌶️ 加点辣
-                     </button>
-                     <button
-                       onClick={() => setQuickOptions(prev => ({ ...prev, cilantro: !prev.cilantro }))}
-                       className={`px-3 py-1.5 rounded-full text-sm font-bold transition-all ${
-                         quickOptions.cilantro 
-                           ? 'bg-green-500 text-white shadow-md' 
-                           : 'bg-white text-gray-600 border border-gray-200'
-                       }`}
-                     >
-                       🌿 加香菜
-                     </button>
-                     <button
-                       onClick={() => setQuickOptions(prev => ({ ...prev, scallion: !prev.scallion }))}
-                       className={`px-3 py-1.5 rounded-full text-sm font-bold transition-all ${
-                         quickOptions.scallion 
-                           ? 'bg-green-600 text-white shadow-md' 
-                           : 'bg-white text-gray-600 border border-gray-200'
-                       }`}
-                     >
-                       🧅 加葱
-                     </button>
+                     {selectedItem.category === '饮品' ? (
+                       // 饮品选项：冰/热/常温
+                       <>
+                         <button
+                           onClick={() => setQuickOptions(prev => ({ ...prev, spicy: !prev.spicy }))}
+                           className={`px-3 py-1.5 rounded-full text-sm font-bold transition-all ${
+                             quickOptions.spicy 
+                               ? 'bg-blue-500 text-white shadow-md' 
+                               : 'bg-white text-gray-600 border border-gray-200'
+                           }`}
+                         >
+                           🧊 冰
+                         </button>
+                         <button
+                           onClick={() => setQuickOptions(prev => ({ ...prev, cilantro: !prev.cilantro }))}
+                           className={`px-3 py-1.5 rounded-full text-sm font-bold transition-all ${
+                             quickOptions.cilantro 
+                               ? 'bg-red-500 text-white shadow-md' 
+                               : 'bg-white text-gray-600 border border-gray-200'
+                           }`}
+                         >
+                           🔥 热
+                         </button>
+                         <button
+                           onClick={() => setQuickOptions(prev => ({ ...prev, scallion: !prev.scallion }))}
+                           className={`px-3 py-1.5 rounded-full text-sm font-bold transition-all ${
+                             quickOptions.scallion 
+                               ? 'bg-green-500 text-white shadow-md' 
+                               : 'bg-white text-gray-600 border border-gray-200'
+                           }`}
+                         >
+                           🌡️ 常温
+                         </button>
+                       </>
+                     ) : (
+                       // 其他菜品选项：加辣/香菜/葱
+                       <>
+                         <button
+                           onClick={() => setQuickOptions(prev => ({ ...prev, spicy: !prev.spicy }))}
+                           className={`px-3 py-1.5 rounded-full text-sm font-bold transition-all ${
+                             quickOptions.spicy 
+                               ? 'bg-red-500 text-white shadow-md' 
+                               : 'bg-white text-gray-600 border border-gray-200'
+                           }`}
+                         >
+                           🌶️ 加点辣
+                         </button>
+                         <button
+                           onClick={() => setQuickOptions(prev => ({ ...prev, cilantro: !prev.cilantro }))}
+                           className={`px-3 py-1.5 rounded-full text-sm font-bold transition-all ${
+                             quickOptions.cilantro 
+                               ? 'bg-green-500 text-white shadow-md' 
+                               : 'bg-white text-gray-600 border border-gray-200'
+                           }`}
+                         >
+                           🌿 加香菜
+                         </button>
+                         <button
+                           onClick={() => setQuickOptions(prev => ({ ...prev, scallion: !prev.scallion }))}
+                           className={`px-3 py-1.5 rounded-full text-sm font-bold transition-all ${
+                             quickOptions.scallion 
+                               ? 'bg-green-600 text-white shadow-md' 
+                               : 'bg-white text-gray-600 border border-gray-200'
+                           }`}
+                         >
+                           🧅 加葱
+                         </button>
+                       </>
+                     )}
                    </div>
                 </div>
                 
@@ -2165,6 +2204,30 @@ export default function App() {
     const ordersInitializedRef = useRef(false);
     const lastRoleRef = useRef(null);
   
+  // 处理手机返回键
+  useEffect(() => {
+    const handleBackButton = (e) => {
+      if (role !== null) {
+        // 如果在顾客端或大厨端，返回到首页
+        e.preventDefault();
+        setRole(null);
+      }
+      // 如果已经在首页，不阻止默认行为（允许退出网站）
+    };
+
+    // 监听浏览器后退事件
+    window.addEventListener('popstate', handleBackButton);
+    
+    // 添加一个历史记录条目，使返回键可以被捕获
+    if (role !== null) {
+      window.history.pushState({ page: role }, '');
+    }
+
+    return () => {
+      window.removeEventListener('popstate', handleBackButton);
+    };
+  }, [role]);
+  
   const showToast = useCallback((msg) => {
     setToastMessage(msg);
   }, []);
@@ -2540,25 +2603,25 @@ export default function App() {
   // Home Page: Select Role
   if (!role) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-orange-50 via-yellow-50 to-orange-100 flex flex-col items-center justify-between p-6 relative overflow-hidden">
+      <div className="min-h-screen bg-gradient-to-b from-orange-50 via-yellow-50 to-orange-100 flex flex-col items-center justify-between p-4 relative overflow-hidden">
         {/* 装饰性背景元素 */}
-        <div className="absolute top-10 left-10 text-6xl opacity-20 animate-bounce">🍳</div>
-        <div className="absolute top-32 right-16 text-5xl opacity-20 animate-pulse">🥘</div>
-        <div className="absolute bottom-32 left-20 text-5xl opacity-20 animate-bounce delay-100">🍜</div>
-        <div className="absolute bottom-20 right-12 text-6xl opacity-20 animate-pulse delay-200">🍲</div>
+        <div className="absolute top-6 left-6 text-4xl opacity-20 animate-bounce">🍳</div>
+        <div className="absolute top-20 right-10 text-3xl opacity-20 animate-pulse">🥘</div>
+        <div className="absolute bottom-24 left-12 text-3xl opacity-20 animate-bounce delay-100">🍜</div>
+        <div className="absolute bottom-16 right-8 text-4xl opacity-20 animate-pulse delay-200">🍲</div>
         
         {/* 顶部标题区域 */}
-        <div className="text-center mt-12 z-10">
-          <div className="inline-block mb-4 animate-in zoom-in duration-500">
-            <div className="text-7xl mb-2">❤️</div>
+        <div className="text-center mt-6 z-10">
+          <div className="inline-block mb-2 animate-in zoom-in duration-500">
+            <div className="text-5xl mb-1">❤️</div>
           </div>
-          <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-500 mb-3 animate-in slide-in-from-top duration-700">
+          <h1 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-500 mb-2 animate-in slide-in-from-top duration-700">
             小蒋炒菜馆
           </h1>
           <div className="flex items-center justify-center gap-2 text-gray-600 animate-in fade-in duration-1000">
-            <span className="text-2xl">👨‍🍳</span>
-            <p className="text-base font-medium">爱心厨房 · 温暖料理</p>
-            <span className="text-2xl">🍽️</span>
+            <span className="text-xl">👨‍🍳</span>
+            <p className="text-sm font-medium">爱心厨房 · 温暖料理</p>
+            <span className="text-xl">🍽️</span>
           </div>
         </div>
 
@@ -2566,36 +2629,36 @@ export default function App() {
         <div className="z-10 animate-in zoom-in duration-700 delay-200">
           <div className="relative">
             {/* 厨师主体 */}
-            <div className="text-9xl filter drop-shadow-2xl">
+            <div className="text-7xl filter drop-shadow-2xl">
               👨‍🍳
             </div>
             {/* 装饰爱心 */}
-            <div className="absolute -top-2 -right-2 text-4xl animate-bounce">
+            <div className="absolute -top-1 -right-1 text-3xl animate-bounce">
               ❤️
             </div>
-            <div className="absolute -bottom-2 -left-2 text-3xl animate-pulse">
+            <div className="absolute -bottom-1 -left-1 text-2xl animate-pulse">
               ✨
             </div>
           </div>
         </div>
 
         {/* 底部按钮区域 */}
-        <div className="w-full max-w-sm space-y-4 mb-8 z-10">
+        <div className="w-full max-w-sm space-y-3 mb-4 z-10">
           <button 
             onClick={() => {
               setRole('customer');
               setInitialView('menu');
             }}
-            className="w-full bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 p-6 rounded-3xl shadow-2xl shadow-orange-200 flex items-center gap-4 transition-all duration-300 hover:scale-105 active:scale-95 border-2 border-white animate-in slide-in-from-bottom duration-500"
+            className="w-full bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 p-4 rounded-2xl shadow-xl shadow-orange-200 flex items-center gap-3 transition-all duration-300 hover:scale-105 active:scale-95 border-2 border-white animate-in slide-in-from-bottom duration-500"
           >
-            <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center text-5xl shadow-lg transform -rotate-6 hover:rotate-0 transition-transform">
+            <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center text-3xl shadow-lg transform -rotate-6 hover:rotate-0 transition-transform">
               🍽️
             </div>
             <div className="text-left flex-1">
-              <h3 className="text-2xl font-black text-white mb-1">我要点菜</h3>
-              <p className="text-orange-100 text-sm font-medium">肚子饿了，想吃好吃的～</p>
+              <h3 className="text-xl font-black text-white mb-0.5">我要点菜</h3>
+              <p className="text-orange-100 text-xs font-medium">肚子饿了，想吃好吃的～</p>
             </div>
-            <div className="text-3xl text-white">→</div>
+            <div className="text-2xl text-white">→</div>
           </button>
 
           <button 
@@ -2603,30 +2666,30 @@ export default function App() {
               setRole('customer');
               setInitialView('history');
             }}
-            className="w-full bg-gradient-to-r from-red-400 to-pink-500 hover:from-red-500 hover:to-pink-600 p-6 rounded-3xl shadow-2xl shadow-pink-200 flex items-center gap-4 transition-all duration-300 hover:scale-105 active:scale-95 border-2 border-white animate-in slide-in-from-bottom duration-500 delay-100"
+            className="w-full bg-gradient-to-r from-red-400 to-pink-500 hover:from-red-500 hover:to-pink-600 p-4 rounded-2xl shadow-xl shadow-pink-200 flex items-center gap-3 transition-all duration-300 hover:scale-105 active:scale-95 border-2 border-white animate-in slide-in-from-bottom duration-500 delay-100"
           >
-            <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center text-5xl shadow-lg transform rotate-6 hover:rotate-0 transition-transform">
+            <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center text-3xl shadow-lg transform rotate-6 hover:rotate-0 transition-transform">
               📝
             </div>
             <div className="text-left flex-1">
-              <h3 className="text-2xl font-black text-white mb-1">我的订单</h3>
-              <p className="text-pink-100 text-sm font-medium">查看订单状态和历史～</p>
+              <h3 className="text-xl font-black text-white mb-0.5">我的订单</h3>
+              <p className="text-pink-100 text-xs font-medium">查看订单状态和历史～</p>
             </div>
-            <div className="text-3xl text-white">→</div>
+            <div className="text-2xl text-white">→</div>
           </button>
 
           <button 
             onClick={() => setRole('kitchen')}
-            className="w-full bg-gradient-to-r from-purple-400 to-indigo-500 hover:from-purple-500 hover:to-indigo-600 p-6 rounded-3xl shadow-2xl shadow-purple-200 flex items-center gap-4 transition-all duration-300 hover:scale-105 active:scale-95 border-2 border-white animate-in slide-in-from-bottom duration-500 delay-200"
+            className="w-full bg-gradient-to-r from-purple-400 to-indigo-500 hover:from-purple-500 hover:to-indigo-600 p-4 rounded-2xl shadow-xl shadow-purple-200 flex items-center gap-3 transition-all duration-300 hover:scale-105 active:scale-95 border-2 border-white animate-in slide-in-from-bottom duration-500 delay-200"
           >
-            <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center text-5xl shadow-lg transform -rotate-6 hover:rotate-0 transition-transform">
+            <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center text-3xl shadow-lg transform -rotate-6 hover:rotate-0 transition-transform">
               🎁
             </div>
             <div className="text-left flex-1">
-              <h3 className="text-2xl font-black text-white mb-1">大厨特供</h3>
-              <p className="text-purple-100 text-sm font-medium">管理菜单，精心烹饪～</p>
+              <h3 className="text-xl font-black text-white mb-0.5">大厨特供</h3>
+              <p className="text-purple-100 text-xs font-medium">管理菜单，精心烹饪～</p>
             </div>
-            <div className="text-3xl text-white">→</div>
+            <div className="text-2xl text-white">→</div>
           </button>
         </div>
 
