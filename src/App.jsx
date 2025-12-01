@@ -2405,15 +2405,25 @@ export default function App() {
   // 处理手机返回键
   useEffect(() => {
     const handleBackButton = (e) => {
-      // 移除返回键处理，因为现在没有角色切换页面了
+      // 如果当前在顾客端或大厨端,返回到home page
+      if (role) {
+        e.preventDefault();
+        setRole(null);
+        window.history.pushState(null, '', window.location.pathname);
+      }
     };
+
+    // 添加一个历史记录条目,使返回键可以被拦截
+    if (role) {
+      window.history.pushState(null, '', window.location.pathname);
+    }
 
     window.addEventListener('popstate', handleBackButton);
 
     return () => {
       window.removeEventListener('popstate', handleBackButton);
     };
-  }, []);
+  }, [role]);
   
   const showToast = useCallback((msg) => {
     setToastMessage(msg);
