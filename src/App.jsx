@@ -1086,16 +1086,16 @@ const CustomerView = ({ userId, setRole, menuItems, allOrders, initialView = 'me
     <div className="min-h-screen bg-[#FFFAF0] flex flex-col">
         {/* Top Navigation and Role Switch */}
         <div className="sticky top-0 z-10 bg-[#FFFAF0]/90 backdrop-blur-md px-4 py-3 flex justify-between items-center shadow-sm">
-            <h1 className="text-xl font-bold text-gray-800 flex items-center">
-                <Heart className="w-6 h-6 text-red-500 mr-2 fill-current" />
-                吃货的点单机
-            </h1>
+            <div className="flex items-center gap-2">
+                <Heart className="w-6 h-6 text-red-500 fill-current" />
+                <h1 className="text-xl font-bold text-gray-800">吃货的点单机</h1>
+            </div>
             <button 
                 onClick={() => setRole(null)} 
-                className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center hover:bg-red-100 transition shadow-md"
+                className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center hover:bg-orange-100 transition shadow-md"
                 title="返回首页"
             >
-                <LogOut className="w-5 h-5 text-gray-600 hover:text-red-500" />
+                <Home className="w-5 h-5 text-gray-600 hover:text-orange-500" />
             </button>
         </div>
 
@@ -2318,16 +2318,16 @@ const KitchenView = ({ setRole, menuItems, updateMenu, deleteMenu, addMenu, allO
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Kitchen Header */}
       <div className="bg-white px-4 py-4 shadow-sm flex justify-between items-center sticky top-0 z-10">
-        <h1 className="text-xl font-bold text-gray-800 flex items-center">
-          <ChefHat className="w-6 h-6 text-gray-800 mr-2" />
-          大厨控制台
-        </h1>
+        <div className="flex items-center gap-2">
+          <ChefHat className="w-6 h-6 text-gray-800" />
+          <h1 className="text-xl font-bold text-gray-800">大厨控制台</h1>
+        </div>
         <button 
             onClick={() => setRole(null)} 
-            className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-red-100 transition shadow-md"
+            className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-orange-100 transition shadow-md"
             title="返回首页"
         >
-            <LogOut className="w-5 h-5 text-gray-600 hover:text-red-500" />
+            <Home className="w-5 h-5 text-gray-600 hover:text-orange-500" />
         </button>
       </div>
 
@@ -2823,14 +2823,34 @@ export default function App() {
 
           <div className="space-y-3">
             <button
-              onClick={() => {
+              onClick={async () => {
                 localStorage.setItem('userRole', 'customer');
                 setSavedRole('customer');
                 setShowRoleModal(false);
-                if ('Notification' in window && Notification.permission === 'default') {
-                  Notification.requestPermission();
+                
+                // 请求通知权限
+                if ('Notification' in window) {
+                  if (Notification.permission === 'default') {
+                    const permission = await Notification.requestPermission();
+                    if (permission === 'granted') {
+                      showToast('已开启顾客通知，将接收订单状态提醒');
+                      // 立即发送测试通知
+                      new Notification('🍽️ 通知已开启', {
+                        body: '您将接收订单状态变化通知',
+                        icon: '🍽️',
+                        requireInteraction: false
+                      });
+                    } else {
+                      showToast('已设置为顾客身份（通知权限未授予）');
+                    }
+                  } else if (Notification.permission === 'granted') {
+                    showToast('已设置为顾客身份，通知已开启');
+                  } else {
+                    showToast('已设置为顾客身份（通知已被拒绝，请在浏览器设置中开启）');
+                  }
+                } else {
+                  showToast('已设置为顾客身份（浏览器不支持通知）');
                 }
-                showToast('已设置为顾客身份，将接收订单状态通知');
               }}
               className="w-full bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 p-4 rounded-2xl shadow-lg flex items-center gap-3 transition-all duration-300 hover:scale-105 active:scale-95"
             >
@@ -2845,14 +2865,34 @@ export default function App() {
             </button>
 
             <button
-              onClick={() => {
+              onClick={async () => {
                 localStorage.setItem('userRole', 'kitchen');
                 setSavedRole('kitchen');
                 setShowRoleModal(false);
-                if ('Notification' in window && Notification.permission === 'default') {
-                  Notification.requestPermission();
+                
+                // 请求通知权限
+                if ('Notification' in window) {
+                  if (Notification.permission === 'default') {
+                    const permission = await Notification.requestPermission();
+                    if (permission === 'granted') {
+                      showToast('已开启大厨通知，将接收新订单提醒');
+                      // 立即发送测试通知
+                      new Notification('👨‍🍳 通知已开启', {
+                        body: '您将接收新订单、催单通知',
+                        icon: '👨‍🍳',
+                        requireInteraction: false
+                      });
+                    } else {
+                      showToast('已设置为大厨身份（通知权限未授予）');
+                    }
+                  } else if (Notification.permission === 'granted') {
+                    showToast('已设置为大厨身份，通知已开启');
+                  } else {
+                    showToast('已设置为大厨身份（通知已被拒绝，请在浏览器设置中开启）');
+                  }
+                } else {
+                  showToast('已设置为大厨身份（浏览器不支持通知）');
                 }
-                showToast('已设置为大厨身份，将接收新订单通知');
               }}
               className="w-full bg-gradient-to-r from-purple-400 to-indigo-500 hover:from-purple-500 hover:to-indigo-600 p-4 rounded-2xl shadow-lg flex items-center gap-3 transition-all duration-300 hover:scale-105 active:scale-95"
             >
@@ -2885,9 +2925,9 @@ export default function App() {
         <div className="absolute bottom-24 left-12 text-3xl opacity-20 animate-bounce delay-100">🍜</div>
         <div className="absolute bottom-16 right-8 text-4xl opacity-20 animate-pulse delay-200">🍲</div>
         
-        {/* 右上角身份标识 */}
+        {/* 左上角身份标识 */}
         {savedRole && (
-          <div className="absolute top-4 right-4 flex items-center gap-2 animate-in slide-in-from-top">
+          <div className="absolute top-4 left-4 flex items-center gap-2 animate-in slide-in-from-left z-20">
             <div className="bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg text-xs font-medium border border-gray-200">
               {savedRole === 'customer' ? '🍽️ 顾客' : '👨‍🍳 大厨'}
             </div>
@@ -3005,9 +3045,9 @@ export default function App() {
     <div className="font-sans max-w-md mx-auto bg-white min-h-screen shadow-2xl overflow-hidden relative">
         <Toast message={toastMessage} onClose={() => setToastMessage('')} />
         
-        {/* 右上角身份标识（在顾客/大厨页面内显示） */}
+        {/* 左上角身份标识（在顾客/大厨页面内显示） */}
         {savedRole && role && (
-          <div className="fixed top-4 right-4 z-50 flex items-center gap-2 animate-in slide-in-from-top">
+          <div className="fixed top-4 left-4 z-50 flex items-center gap-2 animate-in slide-in-from-left">
             <div className="bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg text-xs font-medium border border-gray-200">
               {savedRole === 'customer' ? '🍽️ 顾客' : '👨‍🍳 大厨'}
             </div>
