@@ -1091,16 +1091,9 @@ const CustomerView = ({ userId, setRole, menuItems, allOrders, initialView = 'me
                 吃货的点单机
             </h1>
             <button 
-                onClick={() => {
-                  if (window.confirm('确定要清除身份信息吗？下次打开将重新选择。')) {
-                    localStorage.removeItem('userRole');
-                    setSavedRole(null);
-                    setShowRoleModal(true);
-                    showToast('已清除身份，请重新选择');
-                  }
-                }}
+                onClick={() => setRole(null)} 
                 className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center hover:bg-red-100 transition shadow-md"
-                title="清除身份"
+                title="返回首页"
             >
                 <LogOut className="w-5 h-5 text-gray-600 hover:text-red-500" />
             </button>
@@ -2330,16 +2323,9 @@ const KitchenView = ({ setRole, menuItems, updateMenu, deleteMenu, addMenu, allO
           大厨控制台
         </h1>
         <button 
-            onClick={() => {
-              if (window.confirm('确定要清除身份信息吗？下次打开将重新选择。')) {
-                localStorage.removeItem('userRole');
-                setSavedRole(null);
-                setShowRoleModal(true);
-                showToast('已清除身份，请重新选择');
-              }
-            }}
+            onClick={() => setRole(null)} 
             className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-red-100 transition shadow-md"
-            title="清除身份"
+            title="返回首页"
         >
             <LogOut className="w-5 h-5 text-gray-600 hover:text-red-500" />
         </button>
@@ -2405,7 +2391,7 @@ export default function App() {
     // 如果没有保存的身份，显示选择弹窗
     return !localStorage.getItem('userRole');
   });
-  const [role, setRole] = useState('customer'); // 默认进入顾客页面
+  const [role, setRole] = useState(null); // null表示在home page
   const [menuItems, setMenuItems] = useState([]); // 从云端加载菜单
   const [allOrders, setAllOrders] = useState([]); // Order data lifted
   const [toastMessage, setToastMessage] = useState(''); // Global toast state
@@ -2814,7 +2800,7 @@ export default function App() {
 
   if (!user || menuLoading) return <Loading />;
 
-  // 身份选择弹窗
+  // 身份选择弹窗（首次打开或清除身份后显示）
   if (showRoleModal) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-orange-50 via-yellow-50 to-orange-100 flex flex-col items-center justify-center p-6 relative overflow-hidden">
@@ -2841,10 +2827,10 @@ export default function App() {
                 localStorage.setItem('userRole', 'customer');
                 setSavedRole('customer');
                 setShowRoleModal(false);
-                setRole('customer');
                 if ('Notification' in window && Notification.permission === 'default') {
                   Notification.requestPermission();
                 }
+                showToast('已设置为顾客身份，将接收订单状态通知');
               }}
               className="w-full bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 p-4 rounded-2xl shadow-lg flex items-center gap-3 transition-all duration-300 hover:scale-105 active:scale-95"
             >
@@ -2853,7 +2839,7 @@ export default function App() {
               </div>
               <div className="text-left flex-1">
                 <h3 className="text-lg font-black text-white">我是顾客</h3>
-                <p className="text-orange-100 text-xs">点餐、查看订单</p>
+                <p className="text-orange-100 text-xs">接收订单状态通知</p>
               </div>
               <div className="text-xl text-white">→</div>
             </button>
@@ -2863,10 +2849,10 @@ export default function App() {
                 localStorage.setItem('userRole', 'kitchen');
                 setSavedRole('kitchen');
                 setShowRoleModal(false);
-                setRole('kitchen');
                 if ('Notification' in window && Notification.permission === 'default') {
                   Notification.requestPermission();
                 }
+                showToast('已设置为大厨身份，将接收新订单通知');
               }}
               className="w-full bg-gradient-to-r from-purple-400 to-indigo-500 hover:from-purple-500 hover:to-indigo-600 p-4 rounded-2xl shadow-lg flex items-center gap-3 transition-all duration-300 hover:scale-105 active:scale-95"
             >
@@ -2875,7 +2861,7 @@ export default function App() {
               </div>
               <div className="text-left flex-1">
                 <h3 className="text-lg font-black text-white">我是大厨</h3>
-                <p className="text-purple-100 text-xs">管理菜单、处理订单</p>
+                <p className="text-purple-100 text-xs">接收新订单、催单通知</p>
               </div>
               <div className="text-xl text-white">→</div>
             </button>
@@ -2889,12 +2875,138 @@ export default function App() {
     );
   }
 
+  // Home Page: Select Role (原来的首页，不影响savedRole)
+  if (!role) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-orange-50 via-yellow-50 to-orange-100 flex flex-col items-center justify-between p-4 relative overflow-hidden">
+        {/* 装饰性背景元素 */}
+        <div className="absolute top-6 left-6 text-4xl opacity-20 animate-bounce">🍳</div>
+        <div className="absolute top-20 right-10 text-3xl opacity-20 animate-pulse">🥘</div>
+        <div className="absolute bottom-24 left-12 text-3xl opacity-20 animate-bounce delay-100">🍜</div>
+        <div className="absolute bottom-16 right-8 text-4xl opacity-20 animate-pulse delay-200">🍲</div>
+        
+        {/* 右上角身份标识 */}
+        {savedRole && (
+          <div className="absolute top-4 right-4 flex items-center gap-2 animate-in slide-in-from-top">
+            <div className="bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg text-xs font-medium border border-gray-200">
+              {savedRole === 'customer' ? '🍽️ 顾客' : '👨‍🍳 大厨'}
+            </div>
+            <button
+              onClick={() => {
+                if (window.confirm('确定要清除身份信息吗？下次打开将重新选择。')) {
+                  localStorage.removeItem('userRole');
+                  setSavedRole(null);
+                  setShowRoleModal(true);
+                  showToast('已清除身份，请重新选择');
+                }
+              }}
+              className="bg-red-500 hover:bg-red-600 text-white w-6 h-6 rounded-full shadow-lg text-xs font-bold active:scale-95 transition flex items-center justify-center"
+              title="清除身份"
+            >
+              ✕
+            </button>
+          </div>
+        )}
+        
+        {/* 顶部标题区域 */}
+        <div className="text-center mt-6 z-10">
+          <div className="inline-block mb-2 animate-in zoom-in duration-500">
+            <div className="text-5xl mb-1">❤️</div>
+          </div>
+          <h1 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-500 mb-2 animate-in slide-in-from-top duration-700">
+            小蒋炒菜馆
+          </h1>
+          <div className="flex items-center justify-center gap-2 text-gray-600 animate-in fade-in duration-1000">
+            <span className="text-xl">👨‍🍳</span>
+            <p className="text-sm font-medium">爱心厨房 · 温暖料理</p>
+            <span className="text-xl">🍽️</span>
+          </div>
+        </div>
+
+        {/* 中间厨师插图 */}
+        <div className="z-10 animate-in zoom-in duration-700 delay-200">
+          <div className="relative">
+            {/* 厨师主体 */}
+            <div className="text-7xl filter drop-shadow-2xl">
+              👨‍🍳
+            </div>
+            {/* 装饰爱心 */}
+            <div className="absolute -top-1 -right-1 text-3xl animate-bounce">
+              ❤️
+            </div>
+            <div className="absolute -bottom-1 -left-1 text-2xl animate-pulse">
+              ✨
+            </div>
+          </div>
+        </div>
+
+        {/* 底部按钮区域 - 只用于进入页面，不影响savedRole */}
+        <div className="w-full max-w-sm space-y-3 mb-4 z-10">
+          <button 
+            onClick={() => {
+              setRole('customer');
+              setInitialView('menu');
+            }}
+            className="w-full bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 p-4 rounded-2xl shadow-xl shadow-orange-200 flex items-center gap-3 transition-all duration-300 hover:scale-105 active:scale-95 border-2 border-white animate-in slide-in-from-bottom duration-500"
+          >
+            <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center text-3xl shadow-lg transform -rotate-6 hover:rotate-0 transition-transform">
+              🍽️
+            </div>
+            <div className="text-left flex-1">
+              <h3 className="text-xl font-black text-white mb-0.5">我要点菜</h3>
+              <p className="text-orange-100 text-xs font-medium">肚子饿了，想吃好吃的～</p>
+            </div>
+            <div className="text-2xl text-white">→</div>
+          </button>
+
+          <button 
+            onClick={() => {
+              setRole('customer');
+              setInitialView('history');
+            }}
+            className="w-full bg-gradient-to-r from-red-400 to-pink-500 hover:from-red-500 hover:to-pink-600 p-4 rounded-2xl shadow-xl shadow-pink-200 flex items-center gap-3 transition-all duration-300 hover:scale-105 active:scale-95 border-2 border-white animate-in slide-in-from-bottom duration-500 delay-100"
+          >
+            <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center text-3xl shadow-lg transform rotate-6 hover:rotate-0 transition-transform">
+              📝
+            </div>
+            <div className="text-left flex-1">
+              <h3 className="text-xl font-black text-white mb-0.5">我的订单</h3>
+              <p className="text-pink-100 text-xs font-medium">查看订单状态和历史～</p>
+            </div>
+            <div className="text-2xl text-white">→</div>
+          </button>
+
+          <button 
+            onClick={() => {
+              setRole('kitchen');
+            }}
+            className="w-full bg-gradient-to-r from-purple-400 to-indigo-500 hover:from-purple-500 hover:to-indigo-600 p-4 rounded-2xl shadow-xl shadow-purple-200 flex items-center gap-3 transition-all duration-300 hover:scale-105 active:scale-95 border-2 border-white animate-in slide-in-from-bottom duration-500 delay-200"
+          >
+            <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center text-3xl shadow-lg transform -rotate-6 hover:rotate-0 transition-transform">
+              🎁
+            </div>
+            <div className="text-left flex-1">
+              <h3 className="text-xl font-black text-white mb-0.5">大厨特供</h3>
+              <p className="text-purple-100 text-xs font-medium">管理菜单，精心烹饪～</p>
+            </div>
+            <div className="text-2xl text-white">→</div>
+          </button>
+        </div>
+
+        {/* 底部装饰文字 */}
+        <div className="absolute bottom-2 text-center text-xs text-gray-400 animate-in fade-in duration-1000 delay-500">
+          <p>💝 用爱烹饪每一餐 💝</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="font-sans max-w-md mx-auto bg-white min-h-screen shadow-2xl overflow-hidden relative">
         <Toast message={toastMessage} onClose={() => setToastMessage('')} />
         
-        {/* 右上角身份标识 */}
-        {savedRole && (
+        {/* 右上角身份标识（在顾客/大厨页面内显示） */}
+        {savedRole && role && (
           <div className="fixed top-4 right-4 z-50 flex items-center gap-2 animate-in slide-in-from-top">
             <div className="bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg text-xs font-medium border border-gray-200">
               {savedRole === 'customer' ? '🍽️ 顾客' : '👨‍🍳 大厨'}
@@ -2904,6 +3016,7 @@ export default function App() {
                 if (window.confirm('确定要清除身份信息吗？下次打开将重新选择。')) {
                   localStorage.removeItem('userRole');
                   setSavedRole(null);
+                  setRole(null);
                   setShowRoleModal(true);
                   showToast('已清除身份，请重新选择');
                 }
