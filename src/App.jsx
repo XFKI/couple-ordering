@@ -132,63 +132,63 @@ const DISH_EMOJI_MAP = {
 // Initial menu data
 const INITIAL_MENU = [
   // 主食
-  { id: 'm-1', name: '香炒劲道面', description: '香气浓郁，配料丰富', price: 19, stock: 99, category: '主食', method: '大火快炒，面条筋道', flavor: '香气浓郁，配料丰富', image: '🍜', imageUrl: 'https://placehold.co/320x180/facc15/374151?text=香炒劲道面', tags: [] },
-  { id: 'm-2', name: '经典炒米粉', description: '粒粒分明，口感爽滑', price: 19, stock: 99, category: '主食', method: '高温快炒，火候精准', flavor: '粒粒分明，口感爽滑', image: '🍝', imageUrl: 'https://placehold.co/320x180/facc15/374151?text=经典炒米粉', tags: [] },
-  { id: 'm-3', name: '秘制炒饭', description: '米香四溢，层次丰富', price: 19, stock: 99, category: '主食', method: '秘制配方，快速翻炒', flavor: '米香四溢，层次丰富', image: '🍚', imageUrl: 'https://placehold.co/320x180/facc15/374151?text=秘制炒饭', tags: [] },
-  { id: 'm-4', name: '辣香肉末米粉', description: '鲜香微辣，米粉柔滑', price: 19, stock: 99, category: '主食', method: '肉末炒香，辣椒提味', flavor: '鲜香微辣，米粉柔滑', image: '🌶️', imageUrl: 'https://placehold.co/320x180/facc15/374151?text=辣香肉末米粉', tags: [] },
-  { id: 'm-5', name: '白米饭', description: '清淡原香，百搭主食', price: 19, stock: 99, category: '主食', method: '蒸煮米粒，松软饱满', flavor: '清淡原香，百搭主食', image: '🍚', imageUrl: 'https://placehold.co/320x180/facc15/374151?text=白米饭', tags: [] },
-  { id: 'm-6', name: '煮方便面', description: '快捷鲜香，汤汁浓郁', price: 19, stock: 99, category: '主食', method: '热水煮制，调料入味', flavor: '快捷鲜香，汤汁浓郁', image: '🍜', imageUrl: 'https://placehold.co/320x180/facc15/374151?text=煮方便面', tags: [] },
-  { id: 'm-7', name: '清汤挂面', description: '清爽淡雅，面条柔滑', price: 19, stock: 99, category: '主食', method: '挂面煮熟，清汤调味', flavor: '清爽淡雅，面条柔滑', image: '🥢', imageUrl: 'https://placehold.co/320x180/facc15/374151?text=清汤挂面', tags: [] },
-  { id: 'm-8', name: '香烤吐司', description: '松软微甜，焦香可口', price: 19, stock: 99, category: '主食', method: '烤制金黄，外脆内软', flavor: '松软微甜，焦香可口', image: '🍞', imageUrl: 'https://placehold.co/320x180/facc15/374151?text=香烤吐司', tags: [] },
+  { id: 'm-1', name: '香炒劲道面', description: '香气浓郁，配料丰富', price: 19, stock: 99, sales: 0, category: '主食', method: '大火快炒，面条筋道', flavor: '香气浓郁，配料丰富', image: '🍜', imageUrl: 'https://placehold.co/320x180/facc15/374151?text=香炒劲道面', tags: [] },
+  { id: 'm-2', name: '经典炒米粉', description: '粒粒分明，口感爽滑', price: 19, stock: 99, sales: 0, category: '主食', method: '高温快炒，火候精准', flavor: '粒粒分明，口感爽滑', image: '🍝', imageUrl: 'https://placehold.co/320x180/facc15/374151?text=经典炒米粉', tags: [] },
+  { id: 'm-3', name: '秘制炒饭', description: '米香四溢，层次丰富', price: 19, stock: 99, sales: 0, category: '主食', method: '秘制配方，快速翻炒', flavor: '米香四溢，层次丰富', image: '🍚', imageUrl: 'https://placehold.co/320x180/facc15/374151?text=秘制炒饭', tags: [] },
+  { id: 'm-4', name: '辣香肉末米粉', description: '鲜香微辣，米粉柔滑', price: 19, stock: 99, sales: 0, category: '主食', method: '肉末炒香，辣椒提味', flavor: '鲜香微辣，米粉柔滑', image: '🌶️', imageUrl: 'https://placehold.co/320x180/facc15/374151?text=辣香肉末米粉', tags: [] },
+  { id: 'm-5', name: '白米饭', description: '清淡原香，百搭主食', price: 19, stock: 99, sales: 0, category: '主食', method: '蒸煮米粒，松软饱满', flavor: '清淡原香，百搭主食', image: '🍚', imageUrl: 'https://placehold.co/320x180/facc15/374151?text=白米饭', tags: [] },
+  { id: 'm-6', name: '煮方便面', description: '快捷鲜香，汤汁浓郁', price: 19, stock: 99, sales: 0, category: '主食', method: '热水煮制，调料入味', flavor: '快捷鲜香，汤汁浓郁', image: '🍜', imageUrl: 'https://placehold.co/320x180/facc15/374151?text=煮方便面', tags: [] },
+  { id: 'm-7', name: '清汤挂面', description: '清爽淡雅，面条柔滑', price: 19, stock: 99, sales: 0, category: '主食', method: '挂面煮熟，清汤调味', flavor: '清爽淡雅，面条柔滑', image: '🥢', imageUrl: 'https://placehold.co/320x180/facc15/374151?text=清汤挂面', tags: [] },
+  { id: 'm-8', name: '香烤吐司', description: '松软微甜，焦香可口', price: 19, stock: 99, sales: 0, category: '主食', method: '烤制金黄，外脆内软', flavor: '松软微甜，焦香可口', image: '🍞', imageUrl: 'https://placehold.co/320x180/facc15/374151?text=香烤吐司', tags: [] },
   
   // 主菜
-  { id: 'm-9', name: '可乐炖鸡翅', description: '甜香浓郁，鸡翅嫩滑', price: 19, stock: 99, category: '主菜', method: '可乐慢炖，入味鲜美', flavor: '甜香浓郁，鸡翅嫩滑', image: '🍗', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=可乐炖鸡翅', tags: [] },
-  { id: 'm-10', name: '焦香排骨', description: '外焦里嫩，香气扑鼻', price: 19, stock: 99, category: '主菜', method: '高温煎制，慢火收汁', flavor: '外焦里嫩，香气扑鼻', image: '🍖', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=焦香排骨', tags: [] },
-  { id: 'm-11', name: '麻辣猪耳', description: '脆爽麻辣，开胃下酒', price: 19, stock: 99, category: '主菜', method: '卤制入味，辣椒爆炒', flavor: '脆爽麻辣，开胃下酒', image: '🌶️', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=麻辣猪耳', tags: [] },
-  { id: 'm-12', name: '老干妈炒火腿', description: '辣香浓烈，火腿咸香', price: 19, stock: 99, category: '主菜', method: '老干妈酱爆炒', flavor: '辣香浓烈，火腿咸香', image: '🥓', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=老干妈炒火腿', tags: [] },
-  { id: 'm-13', name: '红烧秘制肉', description: '肥而不腻，入口即化', price: 19, stock: 99, category: '主菜', method: '秘制酱料慢炖', flavor: '肥而不腻，入口即化', image: '🍖', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=红烧秘制肉', tags: ['招牌'] },
-  { id: 'm-14', name: '酸萝卜牛肚', description: '酸爽开胃，牛肚脆嫩', price: 19, stock: 99, category: '主菜', method: '酸萝卜与牛肚快炒', flavor: '酸爽开胃，牛肚脆嫩', image: '🥘', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=酸萝卜牛肚', tags: [] },
-  { id: 'm-15', name: '青椒炒蛋', description: '清香爽口，蛋嫩椒脆', price: 19, stock: 99, category: '主菜', method: '快火翻炒，保持鲜嫩', flavor: '清香爽口，蛋嫩椒脆', image: '🥚', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=青椒炒蛋', tags: [] },
-  { id: 'm-16', name: '经典辣椒炒肉', description: '辣香扑鼻，肉片鲜嫩', price: 19, stock: 99, category: '主菜', method: '辣椒爆炒，肉香入味', flavor: '辣香扑鼻，肉片鲜嫩', image: '🌶️', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=经典辣椒炒肉', tags: [] },
-  { id: 'm-17', name: '小炒黄牛肉', description: '鲜辣爽口，牛肉劲道', price: 19, stock: 99, category: '主菜', method: '快火翻炒，香辣提味', flavor: '鲜辣爽口，牛肉劲道', image: '🥩', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=小炒黄牛肉', tags: [] },
-  { id: 'm-18', name: '混合椒爆炒牛肉', description: '多椒融合，牛肉鲜香', price: 19, stock: 99, category: '主菜', method: '彩椒快炒，肉质滑嫩', flavor: '多椒融合，牛肉鲜香', image: '🫑', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=混合椒爆炒牛肉', tags: [] },
-  { id: 'm-19', name: '酸菜鱼', description: '酸辣鲜香，鱼片嫩滑', price: 19, stock: 99, category: '主菜', method: '酸菜熬汤，鱼片入味', flavor: '酸辣鲜香，鱼片嫩滑', image: '🐟', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=酸菜鱼', tags: ['招牌'] },
-  { id: 'm-20', name: '红烧排骨', description: '浓香酱汁，排骨软烂', price: 19, stock: 99, category: '主菜', method: '慢火红烧，酱香浓郁', flavor: '浓香酱汁，排骨软烂', image: '🍖', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=红烧排骨', tags: [] },
-  { id: 'm-21', name: '鲜椒小炒鸡', description: '鲜辣爽口，鸡肉嫩滑', price: 19, stock: 99, category: '主菜', method: '鲜椒爆炒，鸡肉入味', flavor: '鲜辣爽口，鸡肉嫩滑', image: '🐔', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=鲜椒小炒鸡', tags: [] },
-  { id: 'm-22', name: '农家一碗香', description: '家常浓香，食材丰富', price: 19, stock: 99, category: '主菜', method: '多料合炒，层次分明', flavor: '家常浓香，食材丰富', image: '🥘', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=农家一碗香', tags: [] },
-  { id: 'm-23', name: '麻婆豆腐', description: '麻辣鲜香，豆腐嫩滑', price: 19, stock: 99, category: '主菜', method: '豆腐入锅，麻辣调味', flavor: '麻辣鲜香，豆腐嫩滑', image: '🌶️', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=麻婆豆腐', tags: [] },
-  { id: 'm-24', name: '肉末茄子', description: '咸香入味，茄子软糯', price: 19, stock: 99, category: '主菜', method: '肉末炒香，茄子炖煮', flavor: '咸香入味，茄子软糯', image: '🍆', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=肉末茄子', tags: [] },
+  { id: 'm-9', name: '可乐炖鸡翅', description: '甜香浓郁，鸡翅嫩滑', price: 19, stock: 99, sales: 0, category: '主菜', method: '可乐慢炖，入味鲜美', flavor: '甜香浓郁，鸡翅嫩滑', image: '🍗', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=可乐炖鸡翅', tags: [] },
+  { id: 'm-10', name: '焦香排骨', description: '外焦里嫩，香气扑鼻', price: 19, stock: 99, sales: 0, category: '主菜', method: '高温煎制，慢火收汁', flavor: '外焦里嫩，香气扑鼻', image: '🍖', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=焦香排骨', tags: [] },
+  { id: 'm-11', name: '麻辣猪耳', description: '脆爽麻辣，开胃下酒', price: 19, stock: 99, sales: 0, category: '主菜', method: '卤制入味，辣椒爆炒', flavor: '脆爽麻辣，开胃下酒', image: '🌶️', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=麻辣猪耳', tags: [] },
+  { id: 'm-12', name: '老干妈炒火腿', description: '辣香浓烈，火腿咸香', price: 19, stock: 99, sales: 0, category: '主菜', method: '老干妈酱爆炒', flavor: '辣香浓烈，火腿咸香', image: '🥓', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=老干妈炒火腿', tags: [] },
+  { id: 'm-13', name: '红烧秘制肉', description: '肥而不腻，入口即化', price: 19, stock: 99, sales: 0, category: '主菜', method: '秘制酱料慢炖', flavor: '肥而不腻，入口即化', image: '🍖', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=红烧秘制肉', tags: ['招牌'] },
+  { id: 'm-14', name: '酸萝卜牛肚', description: '酸爽开胃，牛肚脆嫩', price: 19, stock: 99, sales: 0, category: '主菜', method: '酸萝卜与牛肚快炒', flavor: '酸爽开胃，牛肚脆嫩', image: '🥘', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=酸萝卜牛肚', tags: [] },
+  { id: 'm-15', name: '青椒炒蛋', description: '清香爽口，蛋嫩椒脆', price: 19, stock: 99, sales: 0, category: '主菜', method: '快火翻炒，保持鲜嫩', flavor: '清香爽口，蛋嫩椒脆', image: '🥚', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=青椒炒蛋', tags: [] },
+  { id: 'm-16', name: '经典辣椒炒肉', description: '辣香扑鼻，肉片鲜嫩', price: 19, stock: 99, sales: 0, category: '主菜', method: '辣椒爆炒，肉香入味', flavor: '辣香扑鼻，肉片鲜嫩', image: '🌶️', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=经典辣椒炒肉', tags: [] },
+  { id: 'm-17', name: '小炒黄牛肉', description: '鲜辣爽口，牛肉劲道', price: 19, stock: 99, sales: 0, category: '主菜', method: '快火翻炒，香辣提味', flavor: '鲜辣爽口，牛肉劲道', image: '🥩', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=小炒黄牛肉', tags: [] },
+  { id: 'm-18', name: '混合椒爆炒牛肉', description: '多椒融合，牛肉鲜香', price: 19, stock: 99, sales: 0, category: '主菜', method: '彩椒快炒，肉质滑嫩', flavor: '多椒融合，牛肉鲜香', image: '🫑', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=混合椒爆炒牛肉', tags: [] },
+  { id: 'm-19', name: '酸菜鱼', description: '酸辣鲜香，鱼片嫩滑', price: 19, stock: 99, sales: 0, category: '主菜', method: '酸菜熬汤，鱼片入味', flavor: '酸辣鲜香，鱼片嫩滑', image: '🐟', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=酸菜鱼', tags: ['招牌'] },
+  { id: 'm-20', name: '红烧排骨', description: '浓香酱汁，排骨软烂', price: 19, stock: 99, sales: 0, category: '主菜', method: '慢火红烧，酱香浓郁', flavor: '浓香酱汁，排骨软烂', image: '🍖', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=红烧排骨', tags: [] },
+  { id: 'm-21', name: '鲜椒小炒鸡', description: '鲜辣爽口，鸡肉嫩滑', price: 19, stock: 99, sales: 0, category: '主菜', method: '鲜椒爆炒，鸡肉入味', flavor: '鲜辣爽口，鸡肉嫩滑', image: '🐔', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=鲜椒小炒鸡', tags: [] },
+  { id: 'm-22', name: '农家一碗香', description: '家常浓香，食材丰富', price: 19, stock: 99, sales: 0, category: '主菜', method: '多料合炒，层次分明', flavor: '家常浓香，食材丰富', image: '🥘', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=农家一碗香', tags: [] },
+  { id: 'm-23', name: '麻婆豆腐', description: '麻辣鲜香，豆腐嫩滑', price: 19, stock: 99, sales: 0, category: '主菜', method: '豆腐入锅，麻辣调味', flavor: '麻辣鲜香，豆腐嫩滑', image: '🌶️', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=麻婆豆腐', tags: [] },
+  { id: 'm-24', name: '肉末茄子', description: '咸香入味，茄子软糯', price: 19, stock: 99, sales: 0, category: '主菜', method: '肉末炒香，茄子炖煮', flavor: '咸香入味，茄子软糯', image: '🍆', imageUrl: 'https://placehold.co/320x180/ea580c/ffffff?text=肉末茄子', tags: [] },
   
   // 素菜
-  { id: 'm-25', name: '清炒时蔬', description: '清甜爽口，健康美味', price: 19, stock: 99, category: '素菜', method: '轻油快炒，保留原味', flavor: '清甜爽口，健康美味', image: '🥬', imageUrl: 'https://placehold.co/320x180/10b981/ffffff?text=清炒时蔬', tags: [] },
-  { id: 'm-26', name: '酸辣土豆丝', description: '酸辣开胃，脆爽下饭', price: 19, stock: 99, category: '素菜', method: '快炒土豆丝，调酸辣汁', flavor: '酸辣开胃，脆爽下饭', image: '🥔', imageUrl: 'https://placehold.co/320x180/10b981/ffffff?text=酸辣土豆丝', tags: [] },
-  { id: 'm-27', name: '酸辣藕丁', description: '爽脆酸辣，清新解腻', price: 19, stock: 99, category: '素菜', method: '藕丁快炒，酸辣调味', flavor: '爽脆酸辣，清新解腻', image: '🌱', imageUrl: 'https://placehold.co/320x180/10b981/ffffff?text=酸辣藕丁', tags: [] },
-  { id: 'm-28', name: '清炒儿菜', description: '清香脆嫩，鲜甜爽口', price: 19, stock: 99, category: '素菜', method: '快火清炒，保持原味', flavor: '清香脆嫩，鲜甜爽口', image: '🥬', imageUrl: 'https://placehold.co/320x180/10b981/ffffff?text=清炒儿菜', tags: [] },
-  { id: 'm-29', name: '家常豆腐', description: '咸香入味，豆腐嫩滑', price: 19, stock: 99, category: '素菜', method: '煎制豆腐，酱汁收味', flavor: '咸香入味，豆腐嫩滑', image: '🧈', imageUrl: 'https://placehold.co/320x180/10b981/ffffff?text=家常豆腐', tags: [] },
-  { id: 'm-30', name: '时蔬混搭', description: '多彩清新，营养均衡', price: 19, stock: 99, category: '素菜', method: '多种蔬菜快炒', flavor: '多彩清新，营养均衡', image: '🥗', imageUrl: 'https://placehold.co/320x180/10b981/ffffff?text=时蔬混搭', tags: [] },
-  { id: 'm-31', name: '炒三丝', description: '清爽脆口，酸辣适中', price: 19, stock: 99, category: '素菜', method: '土豆、胡萝卜、青椒丝快炒', flavor: '清爽脆口，酸辣适中', image: '🥕', imageUrl: 'https://placehold.co/320x180/10b981/ffffff?text=炒三丝', tags: [] },
-  { id: 'm-32', name: '香菇青菜', description: '清香鲜美，爽口健康', price: 19, stock: 99, category: '素菜', method: '香菇与青菜清炒', flavor: '清香鲜美，爽口健康', image: '🍄', imageUrl: 'https://placehold.co/320x180/10b981/ffffff?text=香菇青菜', tags: [] },
-  { id: 'm-33', name: '清炒丝瓜', description: '清甜爽滑，汁水丰富', price: 19, stock: 99, category: '素菜', method: '丝瓜快炒，保持鲜嫩', flavor: '清甜爽滑，汁水丰富', image: '🥒', imageUrl: 'https://placehold.co/320x180/10b981/ffffff?text=清炒丝瓜', tags: [] },
-  { id: 'm-34', name: '干锅花菜', description: '香辣脆嫩，锅气十足', price: 19, stock: 99, category: '素菜', method: '干锅爆炒，花菜入味', flavor: '香辣脆嫩，锅气十足', image: '🥦', imageUrl: 'https://placehold.co/320x180/10b981/ffffff?text=干锅花菜', tags: [] },
-  { id: 'm-35', name: '番茄炒蛋', description: '酸甜可口，蛋嫩汁浓', price: 19, stock: 99, category: '素菜', method: '番茄与鸡蛋快炒', flavor: '酸甜可口，蛋嫩汁浓', image: '🍅', imageUrl: 'https://placehold.co/320x180/10b981/ffffff?text=番茄炒蛋', tags: [] },
+  { id: 'm-25', name: '清炒时蔬', description: '清甜爽口，健康美味', price: 19, stock: 99, sales: 0, category: '素菜', method: '轻油快炒，保留原味', flavor: '清甜爽口，健康美味', image: '🥬', imageUrl: 'https://placehold.co/320x180/10b981/ffffff?text=清炒时蔬', tags: [] },
+  { id: 'm-26', name: '酸辣土豆丝', description: '酸辣开胃，脆爽下饭', price: 19, stock: 99, sales: 0, category: '素菜', method: '快炒土豆丝，调酸辣汁', flavor: '酸辣开胃，脆爽下饭', image: '🥔', imageUrl: 'https://placehold.co/320x180/10b981/ffffff?text=酸辣土豆丝', tags: [] },
+  { id: 'm-27', name: '酸辣藕丁', description: '爽脆酸辣，清新解腻', price: 19, stock: 99, sales: 0, category: '素菜', method: '藕丁快炒，酸辣调味', flavor: '爽脆酸辣，清新解腻', image: '🌱', imageUrl: 'https://placehold.co/320x180/10b981/ffffff?text=酸辣藕丁', tags: [] },
+  { id: 'm-28', name: '清炒儿菜', description: '清香脆嫩，鲜甜爽口', price: 19, stock: 99, sales: 0, category: '素菜', method: '快火清炒，保持原味', flavor: '清香脆嫩，鲜甜爽口', image: '🥬', imageUrl: 'https://placehold.co/320x180/10b981/ffffff?text=清炒儿菜', tags: [] },
+  { id: 'm-29', name: '家常豆腐', description: '咸香入味，豆腐嫩滑', price: 19, stock: 99, sales: 0, category: '素菜', method: '煎制豆腐，酱汁收味', flavor: '咸香入味，豆腐嫩滑', image: '🧈', imageUrl: 'https://placehold.co/320x180/10b981/ffffff?text=家常豆腐', tags: [] },
+  { id: 'm-30', name: '时蔬混搭', description: '多彩清新，营养均衡', price: 19, stock: 99, sales: 0, category: '素菜', method: '多种蔬菜快炒', flavor: '多彩清新，营养均衡', image: '🥗', imageUrl: 'https://placehold.co/320x180/10b981/ffffff?text=时蔬混搭', tags: [] },
+  { id: 'm-31', name: '炒三丝', description: '清爽脆口，酸辣适中', price: 19, stock: 99, sales: 0, category: '素菜', method: '土豆、胡萝卜、青椒丝快炒', flavor: '清爽脆口，酸辣适中', image: '🥕', imageUrl: 'https://placehold.co/320x180/10b981/ffffff?text=炒三丝', tags: [] },
+  { id: 'm-32', name: '香菇青菜', description: '清香鲜美，爽口健康', price: 19, stock: 99, sales: 0, category: '素菜', method: '香菇与青菜清炒', flavor: '清香鲜美，爽口健康', image: '🍄', imageUrl: 'https://placehold.co/320x180/10b981/ffffff?text=香菇青菜', tags: [] },
+  { id: 'm-33', name: '清炒丝瓜', description: '清甜爽滑，汁水丰富', price: 19, stock: 99, sales: 0, category: '素菜', method: '丝瓜快炒，保持鲜嫩', flavor: '清甜爽滑，汁水丰富', image: '🥒', imageUrl: 'https://placehold.co/320x180/10b981/ffffff?text=清炒丝瓜', tags: [] },
+  { id: 'm-34', name: '干锅花菜', description: '香辣脆嫩，锅气十足', price: 19, stock: 99, sales: 0, category: '素菜', method: '干锅爆炒，花菜入味', flavor: '香辣脆嫩，锅气十足', image: '🥦', imageUrl: 'https://placehold.co/320x180/10b981/ffffff?text=干锅花菜', tags: [] },
+  { id: 'm-35', name: '番茄炒蛋', description: '酸甜可口，蛋嫩汁浓', price: 19, stock: 99, sales: 0, category: '素菜', method: '番茄与鸡蛋快炒', flavor: '酸甜可口，蛋嫩汁浓', image: '🍅', imageUrl: 'https://placehold.co/320x180/10b981/ffffff?text=番茄炒蛋', tags: [] },
   
   // 汤品
-  { id: 'm-36', name: '粉藕排骨汤', description: '汤清味浓，藕粉排骨香', price: 19, stock: 99, category: '汤品', method: '慢火炖煮，清爽滋补', flavor: '汤清味浓，藕粉排骨香', image: '🍲', imageUrl: 'https://placehold.co/320x180/3b82f6/ffffff?text=粉藕排骨汤', tags: [] },
-  { id: 'm-37', name: '虫草花炖鸡汤', description: '滋补养生，鲜香浓郁', price: 19, stock: 99, category: '汤品', method: '虫草花与鸡肉慢炖', flavor: '滋补养生，鲜香浓郁', image: '🍲', imageUrl: 'https://placehold.co/320x180/3b82f6/ffffff?text=虫草花炖鸡汤', tags: ['招牌'] },
-  { id: 'm-38', name: '鲜香鱼汤', description: '鱼鲜汤浓，豆腐嫩滑', price: 19, stock: 99, category: '汤品', method: '鱼骨熬汤，豆腐入味', flavor: '鱼鲜汤浓，豆腐嫩滑', image: '🐠', imageUrl: 'https://placehold.co/320x180/3b82f6/ffffff?text=鲜香鱼汤', tags: [] },
-  { id: 'm-39', name: '鲫鱼豆腐汤', description: '鱼鲜豆香，汤汁清润', price: 19, stock: 99, category: '汤品', method: '鲫鱼熬汤，豆腐入味', flavor: '鱼鲜豆香，汤汁清润', image: '🥣', imageUrl: 'https://placehold.co/320x180/3b82f6/ffffff?text=鲫鱼豆腐汤', tags: [] },
-  { id: 'm-40', name: '炖雪梨', description: '清甜润喉，温润滋养', price: 19, stock: 99, category: '汤品', method: '雪梨慢炖，甜汤入味', flavor: '清甜润喉，温润滋养', image: '🍐', imageUrl: 'https://placehold.co/320x180/3b82f6/ffffff?text=炖雪梨', tags: [] },
-  { id: 'm-41', name: '罗宋汤', description: '酸甜浓郁，西式风味', price: 19, stock: 99, category: '汤品', method: '番茄牛肉慢炖', flavor: '酸甜浓郁，西式风味', image: '🥣', imageUrl: 'https://placehold.co/320x180/3b82f6/ffffff?text=罗宋汤', tags: [] },
-  { id: 'm-42', name: '菌菇汤', description: '清鲜爽口，菌香浓郁', price: 19, stock: 99, category: '汤品', method: '多种菌菇熬煮', flavor: '清鲜爽口，菌香浓郁', image: '🍄', imageUrl: 'https://placehold.co/320x180/3b82f6/ffffff?text=菌菇汤', tags: [] },
-  { id: 'm-43', name: '胡椒猪肚鸡汤', description: '胡椒辛香，滋补暖胃', price: 19, stock: 99, category: '汤品', method: '猪肚鸡肉慢炖，胡椒提味', flavor: '胡椒辛香，滋补暖胃', image: '🍲', imageUrl: 'https://placehold.co/320x180/3b82f6/ffffff?text=胡椒猪肚鸡汤', tags: [] },
+  { id: 'm-36', name: '粉藕排骨汤', description: '汤清味浓，藕粉排骨香', price: 19, stock: 99, sales: 0, category: '汤品', method: '慢火炖煮，清爽滋补', flavor: '汤清味浓，藕粉排骨香', image: '🍲', imageUrl: 'https://placehold.co/320x180/3b82f6/ffffff?text=粉藕排骨汤', tags: [] },
+  { id: 'm-37', name: '虫草花炖鸡汤', description: '滋补养生，鲜香浓郁', price: 19, stock: 99, sales: 0, category: '汤品', method: '虫草花与鸡肉慢炖', flavor: '滋补养生，鲜香浓郁', image: '🍲', imageUrl: 'https://placehold.co/320x180/3b82f6/ffffff?text=虫草花炖鸡汤', tags: ['招牌'] },
+  { id: 'm-38', name: '鲜香鱼汤', description: '鱼鲜汤浓，豆腐嫩滑', price: 19, stock: 99, sales: 0, category: '汤品', method: '鱼骨熬汤，豆腐入味', flavor: '鱼鲜汤浓，豆腐嫩滑', image: '🐠', imageUrl: 'https://placehold.co/320x180/3b82f6/ffffff?text=鲜香鱼汤', tags: [] },
+  { id: 'm-39', name: '鲫鱼豆腐汤', description: '鱼鲜豆香，汤汁清润', price: 19, stock: 99, sales: 0, category: '汤品', method: '鲫鱼熬汤，豆腐入味', flavor: '鱼鲜豆香，汤汁清润', image: '🥣', imageUrl: 'https://placehold.co/320x180/3b82f6/ffffff?text=鲫鱼豆腐汤', tags: [] },
+  { id: 'm-40', name: '炖雪梨', description: '清甜润喉，温润滋养', price: 19, stock: 99, sales: 0, category: '汤品', method: '雪梨慢炖，甜汤入味', flavor: '清甜润喉，温润滋养', image: '🍐', imageUrl: 'https://placehold.co/320x180/3b82f6/ffffff?text=炖雪梨', tags: [] },
+  { id: 'm-41', name: '罗宋汤', description: '酸甜浓郁，西式风味', price: 19, stock: 99, sales: 0, category: '汤品', method: '番茄牛肉慢炖', flavor: '酸甜浓郁，西式风味', image: '🥣', imageUrl: 'https://placehold.co/320x180/3b82f6/ffffff?text=罗宋汤', tags: [] },
+  { id: 'm-42', name: '菌菇汤', description: '清鲜爽口，菌香浓郁', price: 19, stock: 99, sales: 0, category: '汤品', method: '多种菌菇熬煮', flavor: '清鲜爽口，菌香浓郁', image: '🍄', imageUrl: 'https://placehold.co/320x180/3b82f6/ffffff?text=菌菇汤', tags: [] },
+  { id: 'm-43', name: '胡椒猪肚鸡汤', description: '胡椒辛香，滋补暖胃', price: 19, stock: 99, sales: 0, category: '汤品', method: '猪肚鸡肉慢炖，胡椒提味', flavor: '胡椒辛香，滋补暖胃', image: '🍲', imageUrl: 'https://placehold.co/320x180/3b82f6/ffffff?text=胡椒猪肚鸡汤', tags: [] },
   
   // 饮品
-  { id: 'm-44', name: '小蒋特调美式', description: '苦中带甘，醇厚回味', price: 15, stock: 99, category: '饮品', method: '意式浓缩+热水', flavor: '苦中带甘，醇厚回味', image: '☕', imageUrl: 'https://placehold.co/320x180/8b4513/ffffff?text=小蒋特调美式', tags: ['招牌'] },
-  { id: 'm-45', name: '丝滑拿铁', description: '奶香浓郁，柔滑细腻', price: 18, stock: 99, category: '饮品', method: '浓缩咖啡+蒸汽牛奶', flavor: '奶香浓郁，柔滑细腻', image: '☕', imageUrl: 'https://placehold.co/320x180/8b4513/ffffff?text=丝滑拿铁', tags: [] },
-  { id: 'm-46', name: '焦糖玛奇朵', description: '香甜浓郁，层次丰富', price: 20, stock: 99, category: '饮品', method: '浓缩+牛奶+焦糖', flavor: '香甜浓郁，层次丰富', image: '☕', imageUrl: 'https://placehold.co/320x180/8b4513/ffffff?text=焦糖玛奇朵', tags: [] },
-  { id: 'm-47', name: '摩卡奇遇', description: '咖啡巧克力双重奏', price: 20, stock: 99, category: '饮品', method: '浓缩+巧克力+牛奶', flavor: '咖啡巧克力双重奏', image: '☕', imageUrl: 'https://placehold.co/320x180/8b4513/ffffff?text=摩卡奇遇', tags: [] },
-  { id: 'm-48', name: '冰萃冷brew', description: '顺滑清甜，冰爽解渴', price: 16, stock: 99, category: '饮品', method: '冷水慢萃12小时', flavor: '顺滑清甜，冰爽解渴', image: '🧊', imageUrl: 'https://placehold.co/320x180/8b4513/ffffff?text=冰萃冷brew', tags: [] },
-  { id: 'm-49', name: '手冲单品', description: '果酸明亮，香气馥郁', price: 22, stock: 99, category: '饮品', method: '手工冲泡精品豆', flavor: '果酸明亮，香气馥郁', image: '☕', imageUrl: 'https://placehold.co/320x180/8b4513/ffffff?text=手冲单品', tags: [] }
+  { id: 'm-44', name: '小蒋特调美式', description: '苦中带甘，醇厚回味', price: 15, stock: 99, sales: 0, category: '饮品', method: '意式浓缩+热水', flavor: '苦中带甘，醇厚回味', image: '☕', imageUrl: 'https://placehold.co/320x180/8b4513/ffffff?text=小蒋特调美式', tags: ['招牌'] },
+  { id: 'm-45', name: '丝滑拿铁', description: '奶香浓郁，柔滑细腻', price: 18, stock: 99, sales: 0, category: '饮品', method: '浓缩咖啡+蒸汽牛奶', flavor: '奶香浓郁，柔滑细腻', image: '🥛', imageUrl: 'https://placehold.co/320x180/8b4513/ffffff?text=丝滑拿铁', tags: [] },
+  { id: 'm-46', name: '焦糖玛奇朵', description: '香甜浓郁，层次丰富', price: 20, stock: 99, sales: 0, category: '饮品', method: '浓缩+牛奶+焦糖', flavor: '香甜浓郁，层次丰富', image: '🍮', imageUrl: 'https://placehold.co/320x180/8b4513/ffffff?text=焦糖玛奇朵', tags: [] },
+  { id: 'm-47', name: '摩卡奇遇', description: '咖啡巧克力双重奏', price: 20, stock: 99, sales: 0, category: '饮品', method: '浓缩+巧克力+牛奶', flavor: '咖啡巧克力双重奏', image: '🍫', imageUrl: 'https://placehold.co/320x180/8b4513/ffffff?text=摩卡奇遇', tags: [] },
+  { id: 'm-48', name: '冰萃冷brew', description: '顺滑清甜，冰爽解渴', price: 16, stock: 99, sales: 0, category: '饮品', method: '冷水慢萃12小时', flavor: '顺滑清甜，冰爽解渴', image: '🧊', imageUrl: 'https://placehold.co/320x180/8b4513/ffffff?text=冰萃冷brew', tags: [] },
+  { id: 'm-49', name: '手冲单品', description: '果酸明亮，香气馥郁', price: 22, stock: 99, sales: 0, category: '饮品', method: '手工冲泡精品豆', flavor: '果酸明亮，香气馥郁', image: '🫖', imageUrl: 'https://placehold.co/320x180/8b4513/ffffff?text=手冲单品', tags: [] }
 ];
 
 // 用户ID管理
@@ -354,6 +354,103 @@ const OrderDetailModal = ({ order, onClose, sequenceMap }) => {
     );
 };
 
+// 订单编辑Modal
+const OrderEditModal = ({ order, onClose, onSave }) => {
+    const [editedItems, setEditedItems] = useState(order.items);
+    
+    const updateQuantity = (index, delta) => {
+        setEditedItems(prev => {
+            const newItems = [...prev];
+            const newQty = Math.max(0, newItems[index].quantity + delta);
+            if (newQty === 0) {
+                // 删除数量为0的菜品
+                return newItems.filter((_, i) => i !== index);
+            }
+            newItems[index] = { ...newItems[index], quantity: newQty };
+            return newItems;
+        });
+    };
+    
+    const totalPrice = editedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    
+    return (
+        <Modal isOpen={true} onClose={onClose}>
+            <div className="p-5 max-h-[80vh] overflow-y-auto">
+                <div className="flex justify-between items-start mb-4">
+                    <div>
+                        <h3 className="text-xl font-bold text-gray-800">编辑订单</h3>
+                        <p className="text-sm text-gray-500 mt-1">调整菜品数量</p>
+                    </div>
+                    <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full transition">
+                        <X className="w-5 h-5 text-gray-500" />
+                    </button>
+                </div>
+                
+                {editedItems.length === 0 ? (
+                    <div className="text-center py-10 text-gray-400">
+                        <p>订单不能为空</p>
+                    </div>
+                ) : (
+                    <>
+                        <div className="space-y-3 mb-4">
+                            {editedItems.map((item, idx) => (
+                                <div key={idx} className="bg-gray-50 rounded-xl p-3">
+                                    <div className="flex justify-between items-start mb-2">
+                                        <div className="flex-1">
+                                            <p className="font-medium text-gray-800">{item.name}</p>
+                                            {item.special_request && item.special_request !== '无特殊备注' && (
+                                                <p className="text-xs text-orange-600 mt-1">💬 {item.special_request}</p>
+                                            )}
+                                        </div>
+                                        <p className="text-sm font-bold text-gray-600">¥{item.price}</p>
+                                    </div>
+                                    
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-3">
+                                            <button 
+                                                onClick={() => updateQuantity(idx, -1)}
+                                                className="w-8 h-8 bg-white rounded-full flex items-center justify-center border border-gray-300 active:scale-95"
+                                            >
+                                                <Minus className="w-4 h-4 text-gray-600" />
+                                            </button>
+                                            <span className="font-bold text-lg text-gray-800 w-8 text-center">{item.quantity}</span>
+                                            <button 
+                                                onClick={() => updateQuantity(idx, 1)}
+                                                className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center active:scale-95"
+                                            >
+                                                <Plus className="w-4 h-4 text-white" />
+                                            </button>
+                                        </div>
+                                        <p className="text-sm font-bold text-orange-600">小计: ¥{item.price * item.quantity}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        
+                        <div className="bg-gradient-to-r from-orange-50 to-red-50 rounded-xl p-4 flex justify-between items-center mb-4">
+                            <span className="font-bold text-gray-700">新总价</span>
+                            <span className="text-2xl font-bold text-orange-600">¥{totalPrice}</span>
+                        </div>
+                        
+                        <div className="flex gap-3">
+                            <button onClick={onClose} className="flex-1 py-3 bg-gray-200 text-gray-700 rounded-xl font-bold active:scale-95 transition">
+                                取消
+                            </button>
+                            <button 
+                                onClick={() => onSave(order.id, editedItems)}
+                                className="flex-1 py-3 bg-orange-500 text-white rounded-xl font-bold active:scale-95 transition"
+                                disabled={editedItems.length === 0}
+                            >
+                                保存修改
+                            </button>
+                        </div>
+                    </>
+                )}
+            </div>
+        </Modal>
+    );
+};
+
 
 // --- 4. 顾客端组件 ---
 
@@ -362,6 +459,7 @@ const OrderHistoryView = ({ userId, allOrders, showToast }) => {
     const sequenceMap = useMemo(() => calculateDailySequences(allOrders), [allOrders]);
     const [selectedDate, setSelectedDate] = useState('all'); // 'all' 或 'YYYYMMDD'
     const [selectedOrder, setSelectedOrder] = useState(null); // 选中查看详情的订单
+    const [editingOrder, setEditingOrder] = useState(null); // 正在编辑的订单
     
     // 获取所有可用日期
     const availableDates = useMemo(() => {
@@ -401,6 +499,28 @@ const OrderHistoryView = ({ userId, allOrders, showToast }) => {
         } catch (e) {
             console.error('撤销失败:', e);
             showToast('撤销失败，请重试');
+        }
+    };
+    
+    // 更新订单
+    const updateOrder = async (orderId, updatedItems) => {
+        try {
+            const totalPrice = updatedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const { error } = await supabase
+                .from('orders')
+                .update({ 
+                    items: updatedItems,
+                    total_price: totalPrice,
+                    updated_at: new Date().toISOString()
+                })
+                .eq('id', orderId);
+
+            if (error) throw new Error(error.message);
+            showToast('订单已更新');
+            setEditingOrder(null);
+        } catch (e) {
+            console.error('更新失败:', e);
+            showToast('更新失败，请重试');
         }
     };
 
@@ -493,6 +613,15 @@ const OrderHistoryView = ({ userId, allOrders, showToast }) => {
                                 >
                                     <Eye className="w-4 h-4" /> 查看详情
                                 </button>
+                                {/* 编辑按钮：只有pending状态才能编辑 */}
+                                {isPending && (
+                                    <button
+                                        onClick={() => setEditingOrder(order)}
+                                        className="flex-1 py-2 bg-green-500 text-white rounded-lg font-bold text-sm active:scale-95 transition-transform flex items-center justify-center gap-1"
+                                    >
+                                        <Edit className="w-4 h-4" /> 编辑
+                                    </button>
+                                )}
                                 {/* 撤销按钮：只有pending和cooking状态才能撤销 */}
                                 {(isPending || isCooking) && (
                                     <button
@@ -514,6 +643,15 @@ const OrderHistoryView = ({ userId, allOrders, showToast }) => {
                     order={selectedOrder} 
                     onClose={() => setSelectedOrder(null)}
                     sequenceMap={sequenceMap}
+                />
+            )}
+            
+            {/* 订单编辑Modal */}
+            {editingOrder && (
+                <OrderEditModal 
+                    order={editingOrder} 
+                    onClose={() => setEditingOrder(null)}
+                    onSave={updateOrder}
                 />
             )}
         </div>
@@ -706,11 +844,21 @@ const CustomerView = ({ userId, setRole, menuItems, allOrders, initialView = 'me
   const addToCart = () => {
     if (!selectedItem || requestItemQuantity <= 0) return;
     
-    // 构建快捷选项文本
+    // 构建快捷选项文本 - 根据菜品类别决定文本
     const quickOptionsText = [];
-    if (quickOptions.spicy) quickOptionsText.push('加点辣');
-    if (quickOptions.cilantro) quickOptionsText.push('加香菜');
-    if (quickOptions.scallion) quickOptionsText.push('加葱');
+    const isBeverage = selectedItem.category === '饮品';
+    
+    if (isBeverage) {
+        // 饮品：冰/热/常温
+        if (quickOptions.spicy) quickOptionsText.push('冰');
+        if (quickOptions.cilantro) quickOptionsText.push('热');
+        if (quickOptions.scallion) quickOptionsText.push('常温');
+    } else {
+        // 其他菜品：加点辣/香菜/葱
+        if (quickOptions.spicy) quickOptionsText.push('加点辣');
+        if (quickOptions.cilantro) quickOptionsText.push('加香菜');
+        if (quickOptions.scallion) quickOptionsText.push('加葱');
+    }
     
     // 合并备注和快捷选项
     let finalRequest = itemSpecialRequest.trim() || '无特殊备注';
@@ -796,9 +944,7 @@ const CustomerView = ({ userId, setRole, menuItems, allOrders, initialView = 'me
                         <div 
                             key={item.id} 
                             onClick={() => handleSelectItem(item)} 
-                            className={`bg-white rounded-2xl p-3 shadow-md border border-orange-50 flex gap-4 cursor-pointer transform transition-all duration-300 hover:shadow-xl ${
-                                item.stock <= 0 ? 'opacity-50 grayscale' : 'hover:scale-[1.02] active:scale-[0.98]'
-                            }`}
+                            className="bg-white rounded-2xl p-3 shadow-md border border-orange-50 flex gap-4 cursor-pointer transform transition-all duration-300 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
                             style={{
                                 animation: `slideIn 0.3s ease-out ${index * 0.05}s backwards`
                             }}
@@ -824,12 +970,8 @@ const CustomerView = ({ userId, setRole, menuItems, allOrders, initialView = 'me
                                     <span className="text-orange-500 font-bold text-lg flex items-center">
                                         <Heart className="w-4 h-4 mr-1 fill-current animate-pulse" /> ¥{item.price}
                                     </span>
-                                    <span className={`px-3 py-1 rounded-full text-sm font-bold shadow-md transition-all ${
-                                        item.stock > 0 
-                                            ? 'bg-orange-400 text-white shadow-orange-200 hover:bg-orange-500' 
-                                            : 'bg-gray-300 text-gray-600'
-                                    }`}>
-                                        {item.stock > 0 ? '来一份' : '售罄'}
+                                    <span className="px-3 py-1 rounded-full text-sm font-bold shadow-md transition-all bg-orange-400 text-white shadow-orange-200 hover:bg-orange-500">
+                                        来一份
                                     </span>
                                 </div>
                             </div>
@@ -893,14 +1035,27 @@ const CustomerView = ({ userId, setRole, menuItems, allOrders, initialView = 'me
                         
                         <div className="w-full bg-orange-50 rounded-xl p-4 text-left space-y-3 mb-auto">
                             <h3 className="text-xs font-bold text-orange-400 uppercase tracking-wider">订单详情</h3>
-                            {activeOrder.items.map((item, idx) => (
-                                <div key={idx} className="flex justify-between items-start border-b border-orange-100 last:border-b-0 last:pb-0 pb-2 mb-2">
-                                    <div>
-                                        <span className="font-medium text-gray-700">{item.name} x{item.quantity}</span>
-                                        <p className="text-xs text-gray-500 italic mt-0.5">备注: {item.special_request}</p>
+                            {activeOrder.items.map((item, idx) => {
+                                // 根据备注判断是否为饮品
+                                const isBeverage = item.special_request && (
+                                    item.special_request.includes('冰') || 
+                                    item.special_request.includes('热') || 
+                                    item.special_request.includes('常温')
+                                );
+                                
+                                return (
+                                    <div key={idx} className="flex justify-between items-start border-b border-orange-100 last:border-b-0 last:pb-0 pb-2 mb-2">
+                                        <div>
+                                            <span className="font-medium text-gray-700">{item.name} x{item.quantity}</span>
+                                            {item.special_request && item.special_request !== '无特殊备注' && (
+                                                <p className="text-xs text-gray-500 italic mt-0.5">
+                                                    {isBeverage ? '温度: ' : '备注: '}{item.special_request}
+                                                </p>
+                                            )}
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
 
                         <button 
@@ -936,9 +1091,16 @@ const CustomerView = ({ userId, setRole, menuItems, allOrders, initialView = 'me
                 吃货的点单机
             </h1>
             <button 
-                onClick={() => setRole(null)} 
+                onClick={() => {
+                  if (window.confirm('确定要清除身份信息吗？下次打开将重新选择。')) {
+                    localStorage.removeItem('userRole');
+                    setSavedRole(null);
+                    setShowRoleModal(true);
+                    showToast('已清除身份，请重新选择');
+                  }
+                }}
                 className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center hover:bg-red-100 transition shadow-md"
-                title="切换身份"
+                title="清除身份"
             >
                 <LogOut className="w-5 h-5 text-gray-600 hover:text-red-500" />
             </button>
@@ -963,14 +1125,14 @@ const CustomerView = ({ userId, setRole, menuItems, allOrders, initialView = 'me
         {/* Detail Modal */}
         <Modal isOpen={!!selectedItem} onClose={() => setSelectedItem(null)}>
           {selectedItem && (
-            <div className="p-4 pb-6">
-              {/* 实拍图片显示（自适应高度，最大30vh） */}
-              <div className="w-full max-h-[30vh] bg-gray-100 rounded-2xl overflow-hidden flex items-center justify-center text-6xl mb-3 shadow-lg">
+            <div className="p-3 pb-4 max-h-[92vh] overflow-y-auto">
+              {/* 实拍图片显示（自适应高度，最大20vh） */}
+              <div className="w-full max-h-[18vh] bg-gray-100 rounded-xl overflow-hidden flex items-center justify-center text-5xl mb-2 shadow-lg">
                   {selectedItem.imageUrl ? (
                       <img 
                           src={selectedItem.imageUrl} 
                           alt={selectedItem.name} 
-                          className="w-full h-auto max-h-[30vh] object-contain"
+                          className="w-full h-auto max-h-[18vh] object-contain"
                           onError={(e) => { e.target.onerror = null; e.target.src="https://placehold.co/400x400/f3f4f6/6b7280?text=无实拍图/链接失效"; }} 
                       />
                   ) : (
@@ -978,21 +1140,21 @@ const CustomerView = ({ userId, setRole, menuItems, allOrders, initialView = 'me
                   )}
               </div>
 
-              <h3 className="text-2xl font-bold text-gray-800">{selectedItem.name}</h3>
-              <p className="text-gray-500 text-sm mt-2">{selectedItem.description}</p>
+              <h3 className="text-xl font-bold text-gray-800">{selectedItem.name}</h3>
+              <p className="text-gray-500 text-xs mt-1">{selectedItem.description}</p>
               
               {/* Item details display */}
-              <div className="mt-3 grid grid-cols-2 gap-2 text-sm bg-gray-50 p-3 rounded-xl">
+              <div className="mt-2 grid grid-cols-2 gap-2 text-xs bg-gray-50 p-2 rounded-lg">
                   <p><span className="font-bold text-gray-600">类别:</span> {selectedItem.category}</p>
                   <p><span className="font-bold text-gray-600">做法:</span> {selectedItem.method}</p>
                   <p><span className="font-bold text-gray-600">口味:</span> {selectedItem.flavor}</p>
-                  <p><span className="font-bold text-gray-600">库存:</span> {selectedItem.stock > 0 ? `${selectedItem.stock} 份` : '售罄'}</p>
+                  <p><span className="font-bold text-gray-600">销量:</span> <span className="font-bold text-orange-600">{selectedItem.sales || 0}</span> 份</p>
               </div>
 
-              <div className="mt-4 space-y-3">
+              <div className="mt-2 space-y-2">
                 {/* 快捷选项 - 根据菜品类别动态显示 */}
-                <div className="bg-blue-50 p-3 rounded-xl border border-blue-100">
-                   <label className="text-xs font-bold text-blue-600 block mb-2">快捷选项</label>
+                <div className="bg-blue-50 p-2 rounded-lg border border-blue-100">
+                   <label className="text-xs font-bold text-blue-600 block mb-1">快捷选项</label>
                    <div className="flex gap-2 flex-wrap">
                      {selectedItem.category === '饮品' ? (
                        // 饮品选项：冰/热/常温
@@ -1066,41 +1228,40 @@ const CustomerView = ({ userId, setRole, menuItems, allOrders, initialView = 'me
                    </div>
                 </div>
                 
-                <div className="bg-red-50 p-3 rounded-xl border border-red-100">
+                <div className="bg-red-50 p-2 rounded-lg border border-red-100">
                   <label className="text-xs font-bold text-red-400 block mb-1">数量选择</label>
-                  <div className="flex items-center justify-center gap-4 py-2">
-                    <button onClick={() => setRequestItemQuantity(q => Math.max(1, q - 1))} className="p-2 bg-white rounded-full text-gray-600 border shadow-sm active:scale-95">
-                        <Minus />
+                  <div className="flex items-center justify-center gap-3 py-1">
+                    <button onClick={() => setRequestItemQuantity(q => Math.max(1, q - 1))} className="p-1.5 bg-white rounded-full text-gray-600 border shadow-sm active:scale-95">
+                        <Minus className="w-4 h-4" />
                     </button>
-                    <span className="text-2xl font-bold text-gray-800">{requestItemQuantity}</span>
-                    <button onClick={() => setRequestItemQuantity(q => q + 1)} className="p-2 bg-orange-400 text-white rounded-full shadow-md active:scale-95">
-                        <Plus />
+                    <span className="text-xl font-bold text-gray-800">{requestItemQuantity}</span>
+                    <button onClick={() => setRequestItemQuantity(q => q + 1)} className="p-1.5 bg-orange-400 text-white rounded-full shadow-md active:scale-95">
+                        <Plus className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
                 
                 {/* Key: Item-level special request input */}
-                <div className="bg-green-50 p-3 rounded-xl border border-green-100">
+                <div className="bg-green-50 p-2 rounded-lg border border-green-100">
                    <label className="text-xs font-bold text-green-600 block mb-1">本菜品特殊备注</label>
                    <textarea 
                     value={itemSpecialRequest === '无特殊备注' ? '' : itemSpecialRequest}
                     onChange={(e) => setItemSpecialRequest(e.target.value)}
-                    className="w-full bg-white rounded-lg p-2 text-sm border-none focus:ring-2 focus:ring-green-200 outline-none"
+                    className="w-full bg-white rounded-lg p-2 text-xs border-none focus:ring-2 focus:ring-green-200 outline-none"
                     rows={2}
                     placeholder="例如：多放香菜，不要太甜"
                    />
                 </div>
               </div>
 
-              <div className="mt-4 flex gap-3">
-                <button onClick={() => setSelectedItem(null)} className="flex-1 py-3 rounded-xl bg-gray-100 font-bold text-gray-600 active:scale-95">取消</button>
+              <div className="mt-2 flex gap-2">
+                <button onClick={() => setSelectedItem(null)} className="flex-1 py-2 rounded-lg bg-gray-100 font-bold text-gray-600 active:scale-95 text-sm">取消</button>
                 <button 
                     onClick={addToCart} 
-                    disabled={selectedItem.stock <= 0}
-                    className={`flex-1 py-3 rounded-xl text-white font-bold shadow-lg flex items-center justify-center gap-2 active:scale-95 ${selectedItem.stock > 0 ? 'bg-orange-500 shadow-orange-200' : 'bg-gray-400 shadow-gray-200 cursor-not-allowed'}`}
+                    className="flex-1 py-2 rounded-lg text-white font-bold shadow-lg flex items-center justify-center gap-2 active:scale-95 bg-orange-500 shadow-orange-200 text-sm"
                 >
-                    <ShoppingCart className="w-5 h-5 fill-current" /> 
-                    {selectedItem.stock > 0 ? '加入购物车' : '已售罄'}
+                    <ShoppingCart className="w-4 h-4 fill-current" /> 
+                    加入购物车
                 </button>
               </div>
             </div>
@@ -1184,8 +1345,8 @@ const MenuEditForm = ({ item, onSave, onCancel, showToast }) => {
                     <input type="number" name="price" value={formData.price} onChange={handleChange} className="mt-1 w-full p-2 border rounded-lg focus:ring-orange-500" />
                 </label>
                 <label className="block">
-                    <span className="text-sm font-medium text-gray-700">库存 (份)</span>
-                    <input type="number" name="stock" value={formData.stock} onChange={handleChange} className="mt-1 w-full p-2 border rounded-lg focus:ring-orange-500" />
+                    <span className="text-sm font-medium text-gray-700">销量 (只读)</span>
+                    <input type="number" value={formData.sales || 0} readOnly disabled className="mt-1 w-full p-2 border rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed" />
                 </label>
                 <label className="block">
                     <span className="text-sm font-medium text-gray-700">类别</span>
@@ -1660,7 +1821,7 @@ const MenuManagementView = ({ menuItems, updateMenu, deleteMenu, addMenu, showTo
                                 </div>
                                 <p className="text-xs text-gray-400 mt-1">{item.description}</p>
                                 <div className="flex gap-4 mt-2">
-                                    <p className="text-sm text-gray-500">库存: <span className={`font-bold ${item.stock <= 5 ? 'text-red-500' : 'text-green-500'}`}>{item.stock}</span> 份</p>
+                                    <p className="text-sm text-gray-500">销量: <span className="font-bold text-orange-600">{item.sales || 0}</span> 份</p>
                                     <p className="text-sm text-orange-500 font-bold">¥{item.price}</p>
                                 </div>
                             </div>
@@ -1773,13 +1934,49 @@ const KitchenView = ({ setRole, menuItems, updateMenu, deleteMenu, addMenu, allO
             updateData.completed_at = new Date().toISOString();
         }
         
-        const { error } = await supabase
+        const { data: orderData, error } = await supabase
             .from('orders')
             .update(updateData)
             .eq('id', orderId)
             .select();
 
         if (error) throw new Error(error.message);
+        
+        // 如果订单完成，更新菜品销量
+        if (newStatus === 'completed' && orderData && orderData.length > 0) {
+            const order = orderData[0];
+            console.log('开始更新销量，订单商品:', order.items);
+            for (const item of order.items) {
+                console.log(`正在更新菜品: ${item.name} (ID: ${item.id}), 数量: ${item.quantity}`);
+                // 先查询当前销量，再更新
+                const { data: menuItem, error: fetchError } = await supabase
+                    .from('menu')
+                    .select('sales')
+                    .eq('id', item.id)
+                    .single();
+                
+                console.log(`查询到当前销量:`, menuItem);
+                
+                if (!fetchError && menuItem) {
+                    const currentSales = menuItem.sales || 0;
+                    const newSales = currentSales + item.quantity;
+                    console.log(`更新销量: ${currentSales} + ${item.quantity} = ${newSales}`);
+                    
+                    const { error: salesError } = await supabase
+                        .from('menu')
+                        .update({ sales: newSales })
+                        .eq('id', item.id);
+                    
+                    if (salesError) {
+                        console.error(`更新菜品 ${item.name} 销量失败:`, salesError);
+                    } else {
+                        console.log(`✓ 菜品 ${item.name} 销量更新成功: ${newSales}`);
+                    }
+                } else {
+                    console.error(`查询菜品 ${item.name} 失败:`, fetchError);
+                }
+            }
+        }
         
     } catch (e) {
       console.error("更新状态失败 Error:", e);
@@ -2133,9 +2330,16 @@ const KitchenView = ({ setRole, menuItems, updateMenu, deleteMenu, addMenu, allO
           大厨控制台
         </h1>
         <button 
-            onClick={() => setRole(null)} 
+            onClick={() => {
+              if (window.confirm('确定要清除身份信息吗？下次打开将重新选择。')) {
+                localStorage.removeItem('userRole');
+                setSavedRole(null);
+                setShowRoleModal(true);
+                showToast('已清除身份，请重新选择');
+              }
+            }}
             className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-red-100 transition shadow-md"
-            title="切换身份"
+            title="清除身份"
         >
             <LogOut className="w-5 h-5 text-gray-600 hover:text-red-500" />
         </button>
@@ -2193,7 +2397,15 @@ const KitchenView = ({ setRole, menuItems, updateMenu, deleteMenu, addMenu, allO
 
 // --- 6. 主入口 ---
 export default function App() {
-  const [role, setRole] = useState(null); 
+  // 从localStorage读取保存的身份信息
+  const [savedRole, setSavedRole] = useState(() => {
+    return localStorage.getItem('userRole') || null;
+  });
+  const [showRoleModal, setShowRoleModal] = useState(() => {
+    // 如果没有保存的身份，显示选择弹窗
+    return !localStorage.getItem('userRole');
+  });
+  const [role, setRole] = useState('customer'); // 默认进入顾客页面
   const [menuItems, setMenuItems] = useState([]); // 从云端加载菜单
   const [allOrders, setAllOrders] = useState([]); // Order data lifted
   const [toastMessage, setToastMessage] = useState(''); // Global toast state
@@ -2207,33 +2419,28 @@ export default function App() {
   // 处理手机返回键
   useEffect(() => {
     const handleBackButton = (e) => {
-      if (role !== null) {
-        // 如果在顾客端或大厨端，返回到首页
-        e.preventDefault();
-        setRole(null);
-      }
-      // 如果已经在首页，不阻止默认行为（允许退出网站）
+      // 移除返回键处理，因为现在没有角色切换页面了
     };
 
-    // 监听浏览器后退事件
     window.addEventListener('popstate', handleBackButton);
-    
-    // 添加一个历史记录条目，使返回键可以被捕获
-    if (role !== null) {
-      window.history.pushState({ page: role }, '');
-    }
 
     return () => {
       window.removeEventListener('popstate', handleBackButton);
     };
-  }, [role]);
+  }, []);
   
   const showToast = useCallback((msg) => {
     setToastMessage(msg);
   }, []);
 
-  // 系统通知函数
-  const showNotification = useCallback((title, body, icon = '🔔') => {
+  // 系统通知函数 - 根据保存的身份决定是否通知
+  const showNotification = useCallback((title, body, icon = '🔔', targetRole = null) => {
+    // 如果指定了目标身份，检查当前保存的身份是否匹配
+    if (targetRole && savedRole !== targetRole) {
+      console.log(`通知被过滤: 目标身份=${targetRole}, 当前身份=${savedRole}`);
+      return;
+    }
+
     // 检查浏览器是否支持通知
     if (!('Notification' in window)) {
       console.log('浏览器不支持系统通知');
@@ -2248,8 +2455,13 @@ export default function App() {
         icon: icon,
         badge: icon,
         tag: 'order-notification',
-        requireInteraction: false
+        requireInteraction: true, // 需要用户交互才能关闭
+        vibrate: [200, 100, 200] // 震动模式
       });
+      
+      // 播放提示音
+      const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBDGH0fPTgjMGHm7A7+OZRQ0PVajn77FZGAg+ltv0xXEoCi6Czv');
+      audio.play().catch(e => console.log('无法播放提示音:', e));
     }
     // 如果未拒绝，请求授权
     else if (Notification.permission !== 'denied') {
@@ -2260,7 +2472,8 @@ export default function App() {
             icon: icon,
             badge: icon,
             tag: 'order-notification',
-            requireInteraction: false
+            requireInteraction: true,
+            vibrate: [200, 100, 200]
           });
         } else {
           showToast(body); // 降级为Toast
@@ -2269,7 +2482,7 @@ export default function App() {
     } else {
       showToast(body); // 已拒绝，使用Toast
     }
-  }, [showToast]);
+  }, [showToast, savedRole]);
 
   // 初始化时请求通知权限
   useEffect(() => {
@@ -2463,11 +2676,12 @@ export default function App() {
         !previousOrders.some(prev => prev.id === order.id)
     );
 
-    if (role === 'kitchen' && newlyCreatedOrders.length > 0) {
+    if (newlyCreatedOrders.length > 0) {
         const latestOrder = newlyCreatedOrders[0];
         const dishName = latestOrder.items?.[0]?.name || '爱心料理';
         const customerName = latestOrder.customer_name || '客人';
-        showNotification('🍴 新订单', `${customerName} 刚下单了 ${dishName}`, '🍴');
+        // 只通知大厨身份的用户
+        showNotification('🍴 新订单', `${customerName} 刚下单了 ${dishName}`, '🍴', 'kitchen');
     }
 
     // Detect status changes
@@ -2480,7 +2694,8 @@ export default function App() {
     }, []);
 
     statusChanges.forEach(order => {
-        if (role === 'customer' && order.user_id === user.uid) {
+        // 顾客订单状态变化通知
+        if (order.user_id === user.uid) {
             const statusConfig = {
                 cooking: { title: '👨‍🍳 大厨已接单', msg: '正在烹饪中～' },
                 completed: { title: '✅ 出餐完成', msg: '快来领取美味～' },
@@ -2490,19 +2705,19 @@ export default function App() {
             const config = statusConfig[order.status];
             if (config) {
                 const dishName = order.items?.[0]?.name || '菜品';
-                showNotification(config.title, `${dishName} - ${config.msg}`);
+                // 只通知顾客身份的用户
+                showNotification(config.title, `${dishName} - ${config.msg}`, '🔔', 'customer');
             }
         }
 
-        if (role === 'kitchen') {
-            if (order.status === 'pending') {
-                const dishName = order.items?.[0]?.name || '菜品';
-                showNotification('🔔 订单状态变化', `有订单回到了待处理状态: ${dishName}`);
-            }
-            if (order.status === 'cancelled') {
-                const dishName = order.items?.[0]?.name || '菜品';
-                showNotification('❌ 订单取消', `客人取消了订单: ${dishName}`);
-            }
+        // 大厨端订单状态通知
+        if (order.status === 'pending') {
+            const dishName = order.items?.[0]?.name || '菜品';
+            showNotification('🔔 订单状态变化', `有订单回到了待处理状态: ${dishName}`, '🔔', 'kitchen');
+        }
+        if (order.status === 'cancelled') {
+            const dishName = order.items?.[0]?.name || '菜品';
+            showNotification('❌ 订单取消', `客人取消了订单: ${dishName}`, '❌', 'kitchen');
         }
     });
     
@@ -2516,10 +2731,9 @@ export default function App() {
     }, []);
     
     urgentChanges.forEach(order => {
-        if (role === 'kitchen') {
-            const dishName = order.items?.[0]?.name || '菜品';
-            showNotification('🔔 催单通知', `客人在催单啦！订单: ${dishName}`, '🔔');
-        }
+        const dishName = order.items?.[0]?.name || '菜品';
+        // 只通知大厨身份的用户
+        showNotification('🔔 催单通知', `客人在催单啦！订单: ${dishName}`, '🔔', 'kitchen');
     });
 
     prevOrdersRef.current = allOrders;
@@ -2600,110 +2814,107 @@ export default function App() {
 
   if (!user || menuLoading) return <Loading />;
 
-  // Home Page: Select Role
-  if (!role) {
+  // 身份选择弹窗
+  if (showRoleModal) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-orange-50 via-yellow-50 to-orange-100 flex flex-col items-center justify-between p-4 relative overflow-hidden">
+      <div className="min-h-screen bg-gradient-to-b from-orange-50 via-yellow-50 to-orange-100 flex flex-col items-center justify-center p-6 relative overflow-hidden">
         {/* 装饰性背景元素 */}
         <div className="absolute top-6 left-6 text-4xl opacity-20 animate-bounce">🍳</div>
         <div className="absolute top-20 right-10 text-3xl opacity-20 animate-pulse">🥘</div>
         <div className="absolute bottom-24 left-12 text-3xl opacity-20 animate-bounce delay-100">🍜</div>
         <div className="absolute bottom-16 right-8 text-4xl opacity-20 animate-pulse delay-200">🍲</div>
         
-        {/* 顶部标题区域 */}
-        <div className="text-center mt-6 z-10">
-          <div className="inline-block mb-2 animate-in zoom-in duration-500">
-            <div className="text-5xl mb-1">❤️</div>
+        {/* 弹窗内容 */}
+        <div className="bg-white rounded-3xl shadow-2xl p-8 max-w-sm w-full z-10 animate-in zoom-in duration-500">
+          <div className="text-center mb-6">
+            <div className="text-6xl mb-3">👋</div>
+            <h2 className="text-2xl font-black text-gray-800 mb-2">欢迎来到</h2>
+            <h1 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-500">
+              小蒋炒菜馆
+            </h1>
+            <p className="text-sm text-gray-500 mt-3">请选择您的身份</p>
           </div>
-          <h1 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-500 mb-2 animate-in slide-in-from-top duration-700">
-            小蒋炒菜馆
-          </h1>
-          <div className="flex items-center justify-center gap-2 text-gray-600 animate-in fade-in duration-1000">
-            <span className="text-xl">👨‍🍳</span>
-            <p className="text-sm font-medium">爱心厨房 · 温暖料理</p>
-            <span className="text-xl">🍽️</span>
+
+          <div className="space-y-3">
+            <button
+              onClick={() => {
+                localStorage.setItem('userRole', 'customer');
+                setSavedRole('customer');
+                setShowRoleModal(false);
+                setRole('customer');
+                if ('Notification' in window && Notification.permission === 'default') {
+                  Notification.requestPermission();
+                }
+              }}
+              className="w-full bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 p-4 rounded-2xl shadow-lg flex items-center gap-3 transition-all duration-300 hover:scale-105 active:scale-95"
+            >
+              <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-3xl shadow-md">
+                🍽️
+              </div>
+              <div className="text-left flex-1">
+                <h3 className="text-lg font-black text-white">我是顾客</h3>
+                <p className="text-orange-100 text-xs">点餐、查看订单</p>
+              </div>
+              <div className="text-xl text-white">→</div>
+            </button>
+
+            <button
+              onClick={() => {
+                localStorage.setItem('userRole', 'kitchen');
+                setSavedRole('kitchen');
+                setShowRoleModal(false);
+                setRole('kitchen');
+                if ('Notification' in window && Notification.permission === 'default') {
+                  Notification.requestPermission();
+                }
+              }}
+              className="w-full bg-gradient-to-r from-purple-400 to-indigo-500 hover:from-purple-500 hover:to-indigo-600 p-4 rounded-2xl shadow-lg flex items-center gap-3 transition-all duration-300 hover:scale-105 active:scale-95"
+            >
+              <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-3xl shadow-md">
+                👨‍🍳
+              </div>
+              <div className="text-left flex-1">
+                <h3 className="text-lg font-black text-white">我是大厨</h3>
+                <p className="text-purple-100 text-xs">管理菜单、处理订单</p>
+              </div>
+              <div className="text-xl text-white">→</div>
+            </button>
           </div>
-        </div>
 
-        {/* 中间厨师插图 */}
-        <div className="z-10 animate-in zoom-in duration-700 delay-200">
-          <div className="relative">
-            {/* 厨师主体 */}
-            <div className="text-7xl filter drop-shadow-2xl">
-              👨‍🍳
-            </div>
-            {/* 装饰爱心 */}
-            <div className="absolute -top-1 -right-1 text-3xl animate-bounce">
-              ❤️
-            </div>
-            <div className="absolute -bottom-1 -left-1 text-2xl animate-pulse">
-              ✨
-            </div>
-          </div>
-        </div>
-
-        {/* 底部按钮区域 */}
-        <div className="w-full max-w-sm space-y-3 mb-4 z-10">
-          <button 
-            onClick={() => {
-              setRole('customer');
-              setInitialView('menu');
-            }}
-            className="w-full bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 p-4 rounded-2xl shadow-xl shadow-orange-200 flex items-center gap-3 transition-all duration-300 hover:scale-105 active:scale-95 border-2 border-white animate-in slide-in-from-bottom duration-500"
-          >
-            <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center text-3xl shadow-lg transform -rotate-6 hover:rotate-0 transition-transform">
-              🍽️
-            </div>
-            <div className="text-left flex-1">
-              <h3 className="text-xl font-black text-white mb-0.5">我要点菜</h3>
-              <p className="text-orange-100 text-xs font-medium">肚子饿了，想吃好吃的～</p>
-            </div>
-            <div className="text-2xl text-white">→</div>
-          </button>
-
-          <button 
-            onClick={() => {
-              setRole('customer');
-              setInitialView('history');
-            }}
-            className="w-full bg-gradient-to-r from-red-400 to-pink-500 hover:from-red-500 hover:to-pink-600 p-4 rounded-2xl shadow-xl shadow-pink-200 flex items-center gap-3 transition-all duration-300 hover:scale-105 active:scale-95 border-2 border-white animate-in slide-in-from-bottom duration-500 delay-100"
-          >
-            <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center text-3xl shadow-lg transform rotate-6 hover:rotate-0 transition-transform">
-              📝
-            </div>
-            <div className="text-left flex-1">
-              <h3 className="text-xl font-black text-white mb-0.5">我的订单</h3>
-              <p className="text-pink-100 text-xs font-medium">查看订单状态和历史～</p>
-            </div>
-            <div className="text-2xl text-white">→</div>
-          </button>
-
-          <button 
-            onClick={() => setRole('kitchen')}
-            className="w-full bg-gradient-to-r from-purple-400 to-indigo-500 hover:from-purple-500 hover:to-indigo-600 p-4 rounded-2xl shadow-xl shadow-purple-200 flex items-center gap-3 transition-all duration-300 hover:scale-105 active:scale-95 border-2 border-white animate-in slide-in-from-bottom duration-500 delay-200"
-          >
-            <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center text-3xl shadow-lg transform -rotate-6 hover:rotate-0 transition-transform">
-              🎁
-            </div>
-            <div className="text-left flex-1">
-              <h3 className="text-xl font-black text-white mb-0.5">大厨特供</h3>
-              <p className="text-purple-100 text-xs font-medium">管理菜单，精心烹饪～</p>
-            </div>
-            <div className="text-2xl text-white">→</div>
-          </button>
-        </div>
-
-        {/* 底部装饰文字 */}
-        <div className="absolute bottom-2 text-center text-xs text-gray-400 animate-in fade-in duration-1000 delay-500">
-          <p>💝 用爱烹饪每一餐 💝</p>
+          <p className="text-center text-xs text-gray-400 mt-6">
+            💡 选择后将保存您的身份偏好<br/>并开启对应的系统通知
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="font-sans max-w-md mx-auto bg-white min-h-screen shadow-2xl overflow-hidden">
+    <div className="font-sans max-w-md mx-auto bg-white min-h-screen shadow-2xl overflow-hidden relative">
         <Toast message={toastMessage} onClose={() => setToastMessage('')} />
+        
+        {/* 右上角身份标识 */}
+        {savedRole && (
+          <div className="fixed top-4 right-4 z-50 flex items-center gap-2 animate-in slide-in-from-top">
+            <div className="bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg text-xs font-medium border border-gray-200">
+              {savedRole === 'customer' ? '🍽️ 顾客' : '👨‍🍳 大厨'}
+            </div>
+            <button
+              onClick={() => {
+                if (window.confirm('确定要清除身份信息吗？下次打开将重新选择。')) {
+                  localStorage.removeItem('userRole');
+                  setSavedRole(null);
+                  setShowRoleModal(true);
+                  showToast('已清除身份，请重新选择');
+                }
+              }}
+              className="bg-red-500 hover:bg-red-600 text-white w-6 h-6 rounded-full shadow-lg text-xs font-bold active:scale-95 transition flex items-center justify-center"
+              title="清除身份"
+            >
+              ✕
+            </button>
+          </div>
+        )}
 
       {role === 'customer' ? (
         <CustomerView userId={user.uid} setRole={setRole} menuItems={menuItems} allOrders={allOrders} initialView={initialView} />

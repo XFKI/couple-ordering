@@ -68,3 +68,62 @@ self.addEventListener('fetch', (event) => {
       })
   );
 });
+
+// 监听推送通知事件
+self.addEventListener('push', (event) => {
+  console.log('收到推送通知:', event);
+  
+  let notificationData = {
+    title: '新通知',
+    body: '您有新的消息',
+    icon: '/couple-ordering/icon-192.png',
+    badge: '/couple-ordering/icon-192.png',
+    vibrate: [200, 100, 200],
+    requireInteraction: true
+  };
+
+  // 如果推送包含数据，解析数据
+  if (event.data) {
+    try {
+      const data = event.data.json();
+      notificationData = { ...notificationData, ...data };
+    } catch (e) {
+      notificationData.body = event.data.text();
+    }
+  }
+
+  event.waitUntil(
+    self.registration.showNotification(notificationData.title, {
+      body: notificationData.body,
+      icon: notificationData.icon,
+      badge: notificationData.badge,
+      vibrate: notificationData.vibrate,
+      requireInteraction: notificationData.requireInteraction,
+      tag: 'order-notification',
+      data: notificationData.data
+    })
+  );
+});
+
+// 监听通知点击事件
+self.addEventListener('notificationclick', (event) => {
+  console.log('通知被点击:', event);
+  event.notification.close();
+
+  // 打开或聚焦应用
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+      // 如果已有窗口打开，聚焦它
+      for (const client of clientList) {
+        if (client.url.includes(BASE_PATH) && 'focus' in client) {
+          return client.focus();
+        }
+      }
+      // 否则打开新窗口
+      if (clients.openWindow) {
+        return clients.openWindow(BASE_PATH);
+      }
+    })
+  );
+});
+
