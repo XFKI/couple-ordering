@@ -116,7 +116,8 @@ const sendPushPlusNotification = async (token, title, content, template = 'html'
       console.log('PushPlus 推送成功:', title, friendToken ? `(好友: ${friendToken.substring(0,8)}...)` : '(自己)');
       return true;
     } else {
-      console.error('PushPlus 推送失败:', result.msg);
+      console.error('PushPlus 推送失败:', result.msg, '| code:', result.code, '| 好友令牌:', friendToken ? friendToken.substring(0,8) + '...' : '无');
+      console.error('PushPlus 完整响应:', JSON.stringify(result));
       return false;
     }
   } catch (error) {
@@ -2499,7 +2500,7 @@ export default function App() {
   // senderToken: 已实名的发送者 token
   // friendToken: 目标好友的令牌
   const showNotification = useCallback(async (title, body, icon = '🔔', targetRole = null) => {
-    // 1. PushPlus 好友推送 - 使用发送者 token 推送到目标好友
+    // 1. PushPlus 推送
     const sender = localStorage.getItem('pushPlus_senderToken');
     const friendToken = targetRole === 'kitchen' 
       ? localStorage.getItem('pushPlus_friendToken_kitchen')
@@ -2508,20 +2509,31 @@ export default function App() {
         : null;
     
     if (sender && friendToken) {
-      // 添加时间戳防止 PushPlus 防重复机制
+      // 添加时间戳+随机数防止 PushPlus 防重复机制
       const now = new Date();
       const timeStr = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}`;
+      const uniqueId = `${now.getTime()}-${Math.random().toString(36).substr(2, 6)}`;
       const htmlContent = `
         <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 15px; background: linear-gradient(135deg, #fff5f5 0%, #fff8e1 100%); border-radius: 12px;">
           <div style="font-size: 24px; margin-bottom: 10px;">${icon}</div>
           <h2 style="color: #e65100; margin: 0 0 10px 0; font-size: 18px;">${title}</h2>
           <p style="color: #333; margin: 0; font-size: 14px; line-height: 1.6;">${body}</p>
           <p style="color: #999; font-size: 12px; margin-top: 15px;">来自：小蒋炒菜馆 · ${timeStr}</p>
+          <p style="color: transparent; font-size: 1px; height: 0; margin: 0; overflow: hidden;">${uniqueId}</p>
         </div>
       `;
-      // 使用发送者 token 调用 API，推送到好友
-      sendPushPlusNotification(sender, `🍳 ${title}`, htmlContent, 'html', friendToken);
-      console.log(`PushPlus 好友推送: ${targetRole}`);
+      
+      // 判断是否推送给自己（好友令牌 = 发送者token）
+      const isSelf = friendToken === sender;
+      if (isSelf) {
+        // 推送给自己，不使用 to 参数
+        sendPushPlusNotification(sender, `🍳 ${title} [${timeStr}]`, htmlContent, 'html', null);
+        console.log(`PushPlus 推送给自己: ${targetRole}`);
+      } else {
+        // 好友推送
+        sendPushPlusNotification(sender, `🍳 ${title} [${timeStr}]`, htmlContent, 'html', friendToken);
+        console.log(`PushPlus 好友推送: ${targetRole}`);
+      }
     } else if (!sender) {
       console.log('PushPlus: 发送者 token 未配置');
     } else {
@@ -2981,10 +2993,13 @@ export default function App() {
                 // 发送测试通知
                 if (tempSenderToken.trim()) {
                   showToast('正在发送测试通知...');
+                  const now = new Date();
+                  const timeStr = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}`;
+                  const uniqueId = `${now.getTime()}-${Math.random().toString(36).substr(2, 6)}`;
                   const success = await sendPushPlusNotification(
                     tempSenderToken.trim(),
-                    '🎉 配置成功',
-                    '<div style="text-align:center;padding:20px;"><h2 style="color:#e65100;">小蒋炒菜馆</h2><p>✅ 推送配置已保存！</p></div>',
+                    `🎉 配置成功 [${timeStr}]`,
+                    `<div style="text-align:center;padding:20px;"><h2 style="color:#e65100;">小蒋炒菜馆</h2><p>✅ 推送配置已保存！</p><p style="color:transparent;font-size:1px;height:0;margin:0;overflow:hidden;">${uniqueId}</p></div>`,
                     'html'
                   );
                   if (success) {
