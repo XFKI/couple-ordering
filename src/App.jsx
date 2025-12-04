@@ -2508,12 +2508,15 @@ export default function App() {
         : null;
     
     if (sender && friendToken) {
+      // 添加时间戳防止 PushPlus 防重复机制
+      const now = new Date();
+      const timeStr = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}`;
       const htmlContent = `
         <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 15px; background: linear-gradient(135deg, #fff5f5 0%, #fff8e1 100%); border-radius: 12px;">
           <div style="font-size: 24px; margin-bottom: 10px;">${icon}</div>
           <h2 style="color: #e65100; margin: 0 0 10px 0; font-size: 18px;">${title}</h2>
           <p style="color: #333; margin: 0; font-size: 14px; line-height: 1.6;">${body}</p>
-          <p style="color: #999; font-size: 12px; margin-top: 15px;">来自：小蒋炒菜馆</p>
+          <p style="color: #999; font-size: 12px; margin-top: 15px;">来自：小蒋炒菜馆 · ${timeStr}</p>
         </div>
       `;
       // 使用发送者 token 调用 API，推送到好友
