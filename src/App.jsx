@@ -79,31 +79,41 @@ const SUPABASE_ANON_KEY = 'sb_publishable_jMdHVHJNEuwDAKPjpeowkw__yWb7ZaP';
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // --- PushPlus 微信推送配置 ---
-// PushPlus 发送通知函数
-const sendPushPlusNotification = async (token, title, content, template = 'html') => {
+// PushPlus 好友一对一推送函数
+// token: 发送者的 token（需要实名认证）
+// friendToken: 好友的 token（好友令牌/友链码，无需实名）
+// 如果不指定 friendToken，则推送给自己
+const sendPushPlusNotification = async (token, title, content, template = 'html', friendToken = null) => {
   if (!token) {
     console.log('PushPlus token 未配置，跳过微信推送');
     return false;
   }
   
   try {
-    // 使用 CORS 代理或直接调用（PushPlus 支持跨域）
+    const payload = {
+      token: token,
+      title: title,
+      content: content,
+      template: template, // html, txt, json, markdown
+      channel: 'wechat' // 微信公众号
+    };
+    
+    // 如果有好友 token，添加到请求中（一对一好友推送）
+    if (friendToken) {
+      payload.to = friendToken; // 好友令牌
+    }
+    
     const response = await fetch('https://www.pushplus.plus/send', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        token: token,
-        title: title,
-        content: content,
-        template: template // html, txt, json, markdown
-      }),
+      body: JSON.stringify(payload),
     });
     
     const result = await response.json();
     if (result.code === 200) {
-      console.log('PushPlus 推送成功:', title);
+      console.log('PushPlus 推送成功:', title, friendToken ? `(好友: ${friendToken.substring(0,8)}...)` : '(自己)');
       return true;
     } else {
       console.error('PushPlus 推送失败:', result.msg);
@@ -2428,12 +2438,24 @@ export default function App() {
     // 如果没有保存的身份，显示选择弹窗
     return !localStorage.getItem('userRole');
   });
-  // PushPlus token 状态
-  const [pushPlusToken, setPushPlusToken] = useState(() => {
-    return localStorage.getItem('pushPlusToken') || '';
+  
+  // PushPlus 好友推送配置
+  // senderToken: 发送者 token（已实名认证的大厨 token，用于调用 API）
+  // friendToken_kitchen: 大厨的好友令牌（顾客下单时推送给大厨）
+  // friendToken_customer: 顾客的好友令牌（大厨出餐时推送给顾客）
+  const [senderToken, setSenderToken] = useState(() => {
+    return localStorage.getItem('pushPlus_senderToken') || '';
   });
-  const [showTokenInput, setShowTokenInput] = useState(false);
-  const [tempToken, setTempToken] = useState('');
+  const [friendTokenKitchen, setFriendTokenKitchen] = useState(() => {
+    return localStorage.getItem('pushPlus_friendToken_kitchen') || '';
+  });
+  const [friendTokenCustomer, setFriendTokenCustomer] = useState(() => {
+    return localStorage.getItem('pushPlus_friendToken_customer') || '';
+  });
+  const [showTokenConfig, setShowTokenConfig] = useState(false);
+  const [tempSenderToken, setTempSenderToken] = useState('');
+  const [tempFriendKitchen, setTempFriendKitchen] = useState('');
+  const [tempFriendCustomer, setTempFriendCustomer] = useState('');
   
   const [role, setRole] = useState(null); // null表示在home page
   const [menuItems, setMenuItems] = useState([]); // 从云端加载菜单
@@ -2473,17 +2495,19 @@ export default function App() {
     setToastMessage(msg);
   }, []);
  
-  // 系统通知函数 - 根据保存的身份决定是否通知，同时发送PushPlus微信通知
+  // 系统通知函数 - 使用 PushPlus 好友一对一推送
+  // senderToken: 已实名的发送者 token
+  // friendToken: 目标好友的令牌
   const showNotification = useCallback(async (title, body, icon = '🔔', targetRole = null) => {
-    // 如果指定了目标身份，检查当前保存的身份是否匹配
-    if (targetRole && savedRole !== targetRole) {
-      console.log(`通知被过滤: 目标身份=${targetRole}, 当前身份=${savedRole}`);
-      return;
-    }
-
-    // 发送 PushPlus 微信通知（优先级最高，确保手机能收到）
-    const token = localStorage.getItem('pushPlusToken');
-    if (token) {
+    // 1. PushPlus 好友推送 - 使用发送者 token 推送到目标好友
+    const sender = localStorage.getItem('pushPlus_senderToken');
+    const friendToken = targetRole === 'kitchen' 
+      ? localStorage.getItem('pushPlus_friendToken_kitchen')
+      : targetRole === 'customer'
+        ? localStorage.getItem('pushPlus_friendToken_customer')
+        : null;
+    
+    if (sender && friendToken) {
       const htmlContent = `
         <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 15px; background: linear-gradient(135deg, #fff5f5 0%, #fff8e1 100%); border-radius: 12px;">
           <div style="font-size: 24px; margin-bottom: 10px;">${icon}</div>
@@ -2492,10 +2516,22 @@ export default function App() {
           <p style="color: #999; font-size: 12px; margin-top: 15px;">来自：小蒋炒菜馆</p>
         </div>
       `;
-      sendPushPlusNotification(token, `🍳 ${title}`, htmlContent, 'html');
+      // 使用发送者 token 调用 API，推送到好友
+      sendPushPlusNotification(sender, `🍳 ${title}`, htmlContent, 'html', friendToken);
+      console.log(`PushPlus 好友推送: ${targetRole}`);
+    } else if (!sender) {
+      console.log('PushPlus: 发送者 token 未配置');
+    } else {
+      console.log(`PushPlus: ${targetRole} 的好友令牌未配置`);
     }
 
-    // 浏览器通知（作为备用）
+    // 2. 本地浏览器通知 - 受身份过滤（只有当前设备身份匹配才显示）
+    if (targetRole && savedRole !== targetRole) {
+      console.log(`本地通知被过滤: 目标身份=${targetRole}, 当前身份=${savedRole}`);
+      return; // 只跳过本地通知，PushPlus 已经发送了
+    }
+
+    // 浏览器通知
     if ('Notification' in window && Notification.permission === 'granted') {
       new Notification(title, {
         body: body,
@@ -2509,11 +2545,6 @@ export default function App() {
       // 播放提示音
       const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBDGH0fPTgjMGHm7A7+OZRQ0PVajn77FZGAg+ltv0xXEoCi6Czv');
       audio.play().catch(e => console.log('无法播放提示音:', e));
-    }
-    
-    // 如果都不支持，显示Toast
-    if (!token && !('Notification' in window)) {
-      showToast(body);
     }
   }, [showToast, savedRole]);
 
@@ -2847,94 +2878,145 @@ export default function App() {
 
   if (!user || menuLoading) return <Loading />;
 
-  // 身份选择弹窗（首次打开或清除身份后显示）
-  if (showRoleModal) {
-    // Token 输入界面
-    if (showTokenInput) {
-      return (
-        <div className="min-h-screen bg-gradient-to-b from-orange-50 via-yellow-50 to-orange-100 flex flex-col items-center justify-center p-6 relative overflow-hidden">
-          <div className="absolute top-6 left-6 text-4xl opacity-20 animate-bounce">🍳</div>
-          <div className="absolute top-20 right-10 text-3xl opacity-20 animate-pulse">🥘</div>
-          
-          <div className="bg-white rounded-3xl shadow-2xl p-6 max-w-sm w-full z-10 animate-in zoom-in duration-500">
-            <div className="text-center mb-4">
-              <div className="text-5xl mb-2">📱</div>
-              <h2 className="text-xl font-black text-gray-800 mb-1">配置微信通知</h2>
-              <p className="text-xs text-gray-500">通过 PushPlus 接收微信消息推送</p>
+  // PushPlus 好友令牌配置界面
+  if (showTokenConfig) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-orange-50 via-yellow-50 to-orange-100 flex flex-col items-center justify-center p-4 relative overflow-hidden">
+        <div className="absolute top-6 left-6 text-4xl opacity-20 animate-bounce">🍳</div>
+        <div className="absolute top-20 right-10 text-3xl opacity-20 animate-pulse">🥘</div>
+        
+        <div className="bg-white rounded-3xl shadow-2xl p-5 max-w-sm w-full z-10 animate-in zoom-in duration-500 max-h-[90vh] overflow-y-auto">
+          <div className="text-center mb-4">
+            <div className="text-4xl mb-2">📱</div>
+            <h2 className="text-lg font-black text-gray-800 mb-1">配置微信推送</h2>
+            <p className="text-xs text-gray-500">PushPlus 好友一对一推送</p>
+          </div>
+
+          <div className="bg-blue-50 p-3 rounded-xl mb-4 text-xs text-blue-800">
+            <p className="font-bold mb-1">📋 配置说明：</p>
+            <ul className="space-y-1">
+              <li>• <strong>发送者 Token</strong>：您已实名认证的 token（用于调用 API）</li>
+              <li>• <strong>好友令牌</strong>：在 PushPlus「好友消息」中添加好友后获取</li>
+              <li>• 好友只需关注公众号，<strong>无需实名认证</strong>即可接收</li>
+            </ul>
+          </div>
+
+          <div className="space-y-3">
+            {/* 发送者 Token */}
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">
+                🔑 发送者 Token（已实名）
+              </label>
+              <input
+                type="text"
+                value={tempSenderToken}
+                onChange={(e) => setTempSenderToken(e.target.value)}
+                placeholder="您的 PushPlus Token"
+                className="w-full px-3 py-2 border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:outline-none text-sm"
+              />
             </div>
 
-            <div className="bg-blue-50 p-3 rounded-xl mb-4 text-xs text-blue-800">
-              <p className="font-bold mb-1">📋 获取 Token 步骤：</p>
-              <ol className="list-decimal list-inside space-y-1">
-                <li>微信搜索关注 <span className="font-bold">「pushplus推送加」</span> 公众号</li>
-                <li>点击菜单 <span className="font-bold">「功能」→「一对一推送」</span></li>
-                <li>复制页面中的 <span className="font-bold">token</span></li>
-                <li>粘贴到下方输入框</li>
-              </ol>
+            {/* 大厨好友令牌 */}
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">
+                👨‍🍳 大厨好友令牌
+              </label>
+              <input
+                type="text"
+                value={tempFriendKitchen}
+                onChange={(e) => setTempFriendKitchen(e.target.value)}
+                placeholder="推送新订单通知给大厨"
+                className="w-full px-3 py-2 border-2 border-gray-200 rounded-xl focus:border-purple-400 focus:outline-none text-sm"
+              />
+              <p className="text-xs text-gray-400 mt-1">顾客下单时推送给大厨</p>
             </div>
 
-            <input
-              type="text"
-              value={tempToken}
-              onChange={(e) => setTempToken(e.target.value)}
-              placeholder="粘贴您的 PushPlus Token"
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:outline-none text-sm mb-3"
-            />
-
-            <div className="flex gap-2">
-              <button
-                onClick={() => {
-                  setShowTokenInput(false);
-                  setTempToken('');
-                }}
-                className="flex-1 py-3 bg-gray-200 text-gray-700 rounded-xl font-bold text-sm active:scale-95"
-              >
-                返回
-              </button>
-              <button
-                onClick={async () => {
-                  if (tempToken.trim()) {
-                    // 测试 token 是否有效
-                    showToast('正在验证 Token...');
-                    const success = await sendPushPlusNotification(
-                      tempToken.trim(),
-                      '🎉 配置成功',
-                      '<div style="text-align:center;padding:20px;"><h2 style="color:#e65100;">小蒋炒菜馆</h2><p>微信通知已成功开启！</p><p style="font-size:12px;color:#999;">现在您可以接收订单通知了</p></div>',
-                      'html'
-                    );
-                    
-                    if (success) {
-                      localStorage.setItem('pushPlusToken', tempToken.trim());
-                      setPushPlusToken(tempToken.trim());
-                      showToast('✅ Token 验证成功！请检查微信是否收到测试消息');
-                    } else {
-                      showToast('❌ Token 验证失败，请检查是否正确');
-                      return;
-                    }
-                  }
-                  setShowTokenInput(false);
-                  setTempToken('');
-                }}
-                className="flex-1 py-3 bg-gradient-to-r from-green-400 to-green-500 text-white rounded-xl font-bold text-sm active:scale-95"
-              >
-                确认保存
-              </button>
+            {/* 顾客好友令牌 */}
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">
+                🍽️ 顾客好友令牌
+              </label>
+              <input
+                type="text"
+                value={tempFriendCustomer}
+                onChange={(e) => setTempFriendCustomer(e.target.value)}
+                placeholder="推送订单状态给顾客"
+                className="w-full px-3 py-2 border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:outline-none text-sm"
+              />
+              <p className="text-xs text-gray-400 mt-1">大厨出餐时推送给顾客</p>
             </div>
+          </div>
 
+          <div className="flex gap-2 mt-4">
             <button
               onClick={() => {
-                setShowTokenInput(false);
-                setTempToken('');
+                setShowTokenConfig(false);
+                setTempSenderToken(senderToken);
+                setTempFriendKitchen(friendTokenKitchen);
+                setTempFriendCustomer(friendTokenCustomer);
               }}
-              className="w-full mt-2 py-2 text-gray-400 text-xs"
+              className="flex-1 py-3 bg-gray-200 text-gray-700 rounded-xl font-bold text-sm active:scale-95"
             >
-              跳过，暂不配置
+              取消
+            </button>
+            <button
+              onClick={async () => {
+                // 保存配置
+                if (tempSenderToken.trim()) {
+                  localStorage.setItem('pushPlus_senderToken', tempSenderToken.trim());
+                  setSenderToken(tempSenderToken.trim());
+                }
+                if (tempFriendKitchen.trim()) {
+                  localStorage.setItem('pushPlus_friendToken_kitchen', tempFriendKitchen.trim());
+                  setFriendTokenKitchen(tempFriendKitchen.trim());
+                }
+                if (tempFriendCustomer.trim()) {
+                  localStorage.setItem('pushPlus_friendToken_customer', tempFriendCustomer.trim());
+                  setFriendTokenCustomer(tempFriendCustomer.trim());
+                }
+                
+                // 发送测试通知
+                if (tempSenderToken.trim()) {
+                  showToast('正在发送测试通知...');
+                  const success = await sendPushPlusNotification(
+                    tempSenderToken.trim(),
+                    '🎉 配置成功',
+                    '<div style="text-align:center;padding:20px;"><h2 style="color:#e65100;">小蒋炒菜馆</h2><p>✅ 推送配置已保存！</p></div>',
+                    'html'
+                  );
+                  if (success) {
+                    showToast('✅ 配置已保存，测试通知已发送！');
+                  } else {
+                    showToast('⚠️ 配置已保存，但测试通知发送失败');
+                  }
+                } else {
+                  showToast('✅ 配置已保存');
+                }
+                
+                setShowTokenConfig(false);
+              }}
+              className="flex-1 py-3 bg-gradient-to-r from-green-400 to-green-500 text-white rounded-xl font-bold text-sm active:scale-95"
+            >
+              保存配置
             </button>
           </div>
-        </div>
-      );
-    }
 
+          <div className="mt-4 p-3 bg-yellow-50 rounded-xl text-xs text-yellow-800">
+            <p className="font-bold mb-1">💡 如何获取好友令牌？</p>
+            <ol className="list-decimal list-inside space-y-1">
+              <li>登录 pushplus.plus 网站</li>
+              <li>点击「好友消息」→「我的好友」</li>
+              <li>添加好友（好友需先关注公众号）</li>
+              <li>复制好友的「好友令牌」</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 身份选择弹窗（首次打开或清除身份后显示）
+  if (showRoleModal) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-orange-50 via-yellow-50 to-orange-100 flex flex-col items-center justify-center p-6 relative overflow-hidden">
         {/* 装饰性背景元素 */}
@@ -2959,13 +3041,8 @@ export default function App() {
               onClick={() => {
                 localStorage.setItem('userRole', 'customer');
                 setSavedRole('customer');
-                // 如果没有配置过 token，提示配置
-                if (!localStorage.getItem('pushPlusToken')) {
-                  setShowTokenInput(true);
-                } else {
-                  setShowRoleModal(false);
-                  showToast('欢迎回来，顾客身份已恢复');
-                }
+                setShowRoleModal(false);
+                showToast('已选择顾客身份');
               }}
               className="w-full bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 p-4 rounded-2xl shadow-lg flex items-center gap-3 transition-all duration-300 hover:scale-105 active:scale-95"
             >
@@ -2974,7 +3051,7 @@ export default function App() {
               </div>
               <div className="text-left flex-1">
                 <h3 className="text-lg font-black text-white">我是顾客</h3>
-                <p className="text-orange-100 text-xs">接收订单状态通知</p>
+                <p className="text-orange-100 text-xs">点菜、查看订单状态</p>
               </div>
               <div className="text-xl text-white">→</div>
             </button>
@@ -2983,13 +3060,8 @@ export default function App() {
               onClick={() => {
                 localStorage.setItem('userRole', 'kitchen');
                 setSavedRole('kitchen');
-                // 如果没有配置过 token，提示配置
-                if (!localStorage.getItem('pushPlusToken')) {
-                  setShowTokenInput(true);
-                } else {
-                  setShowRoleModal(false);
-                  showToast('欢迎回来，大厨身份已恢复');
-                }
+                setShowRoleModal(false);
+                showToast('已选择大厨身份');
               }}
               className="w-full bg-gradient-to-r from-purple-400 to-indigo-500 hover:from-purple-500 hover:to-indigo-600 p-4 rounded-2xl shadow-lg flex items-center gap-3 transition-all duration-300 hover:scale-105 active:scale-95"
             >
@@ -2998,14 +3070,14 @@ export default function App() {
               </div>
               <div className="text-left flex-1">
                 <h3 className="text-lg font-black text-white">我是大厨</h3>
-                <p className="text-purple-100 text-xs">接收新订单、催单通知</p>
+                <p className="text-purple-100 text-xs">接单、管理菜单</p>
               </div>
               <div className="text-xl text-white">→</div>
             </button>
           </div>
 
           <p className="text-center text-xs text-gray-400 mt-6">
-            💡 选择后可配置微信推送通知<br/>确保手机随时收到消息
+            💡 身份选择后可在首页配置微信推送
           </p>
         </div>
       </div>
@@ -3032,9 +3104,7 @@ export default function App() {
               onClick={() => {
                 if (window.confirm('确定要清除身份信息吗？下次打开将重新选择。')) {
                   localStorage.removeItem('userRole');
-                  localStorage.removeItem('pushPlusToken');
                   setSavedRole(null);
-                  setPushPlusToken('');
                   setShowRoleModal(true);
                   showToast('已清除身份，请重新选择');
                 }
@@ -3050,21 +3120,16 @@ export default function App() {
         {/* 右上角通知配置按钮 */}
         <button
           onClick={() => {
-            setTempToken(pushPlusToken);
-            // 如果已有身份，直接进入 token 配置
-            if (savedRole) {
-              setShowTokenInput(true);
-              setShowRoleModal(true);
-            } else {
-              // 否则先选择身份
-              setShowRoleModal(true);
-            }
+            setTempSenderToken(senderToken);
+            setTempFriendKitchen(friendTokenKitchen);
+            setTempFriendCustomer(friendTokenCustomer);
+            setShowTokenConfig(true);
           }}
           className="absolute top-4 right-4 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg text-xs font-medium border border-gray-200 flex items-center gap-1 z-20 active:scale-95 transition"
-          title="配置微信通知"
+          title="配置微信推送"
         >
           <Bell className="w-4 h-4" />
-          {pushPlusToken ? '✅' : '⚠️'}
+          {senderToken ? '✅' : '⚠️'}
         </button>
         
         {/* 顶部标题区域 */}
